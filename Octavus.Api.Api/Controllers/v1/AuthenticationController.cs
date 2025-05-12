@@ -5,6 +5,7 @@ using Octavus.App.Api.Authentication.Request;
 using Octavus.Authentication.Request;
 using Octavus.Infra.Core.Services;
 using System.Collections.Generic;
+using Octavus.Core.Application.DTO;
 
 [ApiController]
 [Route("api/[controller]")]

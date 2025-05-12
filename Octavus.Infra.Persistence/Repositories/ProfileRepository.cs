@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Octavus.Core.Domain.Entities;
+using Octavus.Core.Domain.Interfaces;
 
 namespace Octavus.Infra.Persistence.Repositories
 {
-    internal class ProfileRepository
+    public class ProfileRepository : RepositoryBase<Profile>, IProfileRepository
     {
+        public ProfileRepository(Context context) : base(context) { }
     }
+
 }

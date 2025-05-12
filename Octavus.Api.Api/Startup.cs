@@ -12,6 +12,10 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Collections.Generic;
 using Octavus.Infra.Core;
 using Octavus.Authentication;
+using Octavus.Core.Application.Services;
+using Octavus.Infra.Core.Services;
+using Octavus.Core.Domain.Interfaces;
+using Octavus.Infra.Persistence.Repositories;
 
 public class Startup
 {
@@ -58,6 +62,16 @@ public class Startup
          services.AddHttpClient<KeycloakService>();
          services.Configure<KeycloakOptions>(keycloakConfig);
         services.AddControllers();
+
+        services.AddScoped<IKeycloakService, KeycloakService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProfileService, ProfileService>();
+        services.AddScoped<IInstrumentService, InstrumentService>();
+
+        
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IProfileRepository, ProfileRepository>();
+        services.AddScoped<IInstrumentRepository, InstrumentRepository>();
 
         services.AddApiVersioning(options =>
         {

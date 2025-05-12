@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Octavus.Core.Application\Octavus.Core.Application.csproj" />
     <ProjectReference Include="..\Octavus.Infra.Persistence\Octavus.Infra.Persistence.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Octavus.Infra.Core.Services
+namespace Octavus.Core.Application.DTO
 {
     public class KeycloakUser
     {

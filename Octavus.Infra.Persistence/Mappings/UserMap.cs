@@ -32,10 +32,14 @@ namespace Octavus.Infra.Persistence.Mappings
             builder.Property(u => u.Contact)
                 .HasMaxLength(50);
 
+            builder.Property(u => u.InstrumentId)
+                .IsRequired();
+
             builder.Property(u => u.ProfileId)
                 .IsRequired();
 
             builder.HasOne<Profile>().WithMany().HasForeignKey(u => u.ProfileId);
+            builder.HasOne<Instrument>().WithMany().HasForeignKey(u => u.InstrumentId);
         }
     }
 
