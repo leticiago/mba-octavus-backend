@@ -45,10 +45,18 @@ namespace Octavus.Infra.Persistence.Mappings
             builder.Property(a => a.InstrumentId)
                 .IsRequired();
 
-            // Relacionamento (caso exista)
-            // builder.HasOne<Instrument>()
-            //     .WithMany()
-            //     .HasForeignKey(a => a.InstrumentId);
+            builder.Property(a => a.ProfessorId)
+            .IsRequired(false);
+
+            builder.HasOne<Instrument>()
+            .WithMany()
+            .HasForeignKey(a => a.InstrumentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(a => a.Questions)
+                .WithOne(q => q.Activity)
+                .HasForeignKey(q => q.ActivityId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

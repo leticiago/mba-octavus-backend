@@ -1,11 +1,6 @@
-﻿using Octavus.Core.Application.Services;
+﻿using Octavus.Core.Application.Repositories;
+using Octavus.Core.Application.Services;
 using Octavus.Core.Domain.Entities;
-using Octavus.Core.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Octavus.Infra.Core.Services
 {

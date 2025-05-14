@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Octavus.Core.Domain\Octavus.Core.Domain.csproj" />
   </ItemGroup>
 

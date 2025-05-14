@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Octavus.Infra.Persistence;
 
@@ -11,9 +12,11 @@ using Octavus.Infra.Persistence;
 namespace Octavus.Infra.Persistence.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20250513231330_AddAnswersToQuestion")]
+    partial class AddAnswersToQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,9 +52,6 @@ namespace Octavus.Infra.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid?>("ProfessorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -61,8 +61,6 @@ namespace Octavus.Infra.Persistence.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InstrumentId");
 
                     b.ToTable("Activities", (string)null);
                 });
@@ -105,6 +103,9 @@ namespace Octavus.Infra.Persistence.Migrations
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("QuestionId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -113,6 +114,8 @@ namespace Octavus.Infra.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("QuestionId1");
 
                     b.ToTable("Answers", (string)null);
                 });
@@ -202,17 +205,12 @@ namespace Octavus.Infra.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ActivityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivityId");
 
                     b.ToTable("Questions", (string)null);
                 });
@@ -262,15 +260,6 @@ namespace Octavus.Infra.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Octavus.Core.Domain.Entities.Activity", b =>
-                {
-                    b.HasOne("Octavus.Core.Domain.Entities.Instrument", null)
-                        .WithMany()
-                        .HasForeignKey("InstrumentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Octavus.Core.Domain.Entities.ActivityStudent", b =>
                 {
                     b.HasOne("Octavus.Core.Domain.Entities.Activity", null)
@@ -288,13 +277,15 @@ namespace Octavus.Infra.Persistence.Migrations
 
             modelBuilder.Entity("Octavus.Core.Domain.Entities.Answer", b =>
                 {
-                    b.HasOne("Octavus.Core.Domain.Entities.Question", "Question")
-                        .WithMany("Answers")
+                    b.HasOne("Octavus.Core.Domain.Entities.Question", null)
+                        .WithMany()
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.HasOne("Octavus.Core.Domain.Entities.Question", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId1");
                 });
 
             modelBuilder.Entity("Octavus.Core.Domain.Entities.DragAndDropActivity", b =>
@@ -315,17 +306,6 @@ namespace Octavus.Infra.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Octavus.Core.Domain.Entities.Question", b =>
-                {
-                    b.HasOne("Octavus.Core.Domain.Entities.Activity", "Activity")
-                        .WithMany("Questions")
-                        .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
-                });
-
             modelBuilder.Entity("Octavus.Core.Domain.Entities.User", b =>
                 {
                     b.HasOne("Octavus.Core.Domain.Entities.Instrument", null)
@@ -339,11 +319,6 @@ namespace Octavus.Infra.Persistence.Migrations
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Octavus.Core.Domain.Entities.Activity", b =>
-                {
-                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("Octavus.Core.Domain.Entities.Question", b =>

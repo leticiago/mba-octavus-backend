@@ -1,10 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Octavus.Core.Domain.Entities;
 
 namespace Octavus.Infra.Persistence.Mappings
@@ -20,7 +15,20 @@ namespace Octavus.Infra.Persistence.Mappings
             builder.Property(q => q.Title)
                 .IsRequired()
                 .HasMaxLength(200);
+
+           
+            builder.Property(q => q.ActivityId)
+                .IsRequired();
+
+            builder.HasOne(q => q.Activity)
+                .WithMany(a => a.Questions)
+                .HasForeignKey(q => q.ActivityId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(q => q.Answers)
+                .WithOne(a => a.Question)
+                .HasForeignKey(a => a.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
-
 }

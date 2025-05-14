@@ -14,8 +14,8 @@ using Octavus.Infra.Core;
 using Octavus.Authentication;
 using Octavus.Core.Application.Services;
 using Octavus.Infra.Core.Services;
-using Octavus.Core.Domain.Interfaces;
 using Octavus.Infra.Persistence.Repositories;
+using Octavus.Core.Application.Repositories;
 
 public class Startup
 {
@@ -67,11 +67,16 @@ public class Startup
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProfileService, ProfileService>();
         services.AddScoped<IInstrumentService, InstrumentService>();
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IDragAndDropActivityService, DragAndDropActivityService>();
+
 
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
         services.AddScoped<IInstrumentRepository, InstrumentRepository>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<IDragAndDropActivityRepository, DragAndDropActivityRepository>();
 
         services.AddApiVersioning(options =>
         {

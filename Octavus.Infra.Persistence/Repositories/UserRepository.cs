@@ -1,5 +1,5 @@
-﻿using Octavus.Core.Domain.Entities;
-using Octavus.Core.Domain.Interfaces;
+﻿using Octavus.Core.Application.Repositories;
+using Octavus.Core.Domain.Entities;
 
 namespace Octavus.Infra.Persistence.Repositories
 {

@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Octavus.Core.Domain.Interfaces
+namespace Octavus.Core.Application.Repositories
 {
-    public interface IUserRepository : IRepositoryBase<User>
+    public interface IDragAndDropActivityRepository : IRepositoryBase<DragAndDropActivity>
     {
-        
     }
 
 }
