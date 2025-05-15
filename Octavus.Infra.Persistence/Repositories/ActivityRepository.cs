@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Octavus.Core.Application.Repositories;
+using Octavus.Core.Domain.Entities;
 
 namespace Octavus.Infra.Persistence.Repositories
 {
-    internal class ActivityRepository
+    public class ActivityRepository : RepositoryBase<Activity>, IActivityRepository
     {
+        public ActivityRepository(Context context) : base(context)
+        {
+        }
+
+        public async Task<IEnumerable<Activity>> GetByProfessorIdAsync(Guid professorId)
+        {
+            return await _dbSet
+                .Where(a => a.ProfessorId == professorId)
+                .ToListAsync();
+        }
     }
+
 }

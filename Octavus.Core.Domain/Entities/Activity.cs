@@ -9,7 +9,7 @@ public class Activity : Entity
     public string Type { get; set; }
     public DateTime Date { get; set; }
     public string Level { get; set; }
-    public bool Status { get; set; }
+    public bool IsPublic { get; set; }
     public Guid InstrumentId { get; set; }
     public Guid? ProfessorId { get; set; }
     public ICollection<Question> Questions { get; set; }

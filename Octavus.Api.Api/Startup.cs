@@ -69,6 +69,7 @@ public class Startup
         services.AddScoped<IInstrumentService, InstrumentService>();
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IDragAndDropActivityService, DragAndDropActivityService>();
+        services.AddScoped<IActivityService, ActivityService>();
 
 
         
@@ -77,6 +78,7 @@ public class Startup
         services.AddScoped<IInstrumentRepository, InstrumentRepository>();
         services.AddScoped<IQuestionRepository, QuestionRepository>();
         services.AddScoped<IDragAndDropActivityRepository, DragAndDropActivityRepository>();
+        services.AddScoped<IActivityRepository, ActivityRepository>();
 
         services.AddApiVersioning(options =>
         {

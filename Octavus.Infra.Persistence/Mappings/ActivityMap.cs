@@ -39,7 +39,7 @@ namespace Octavus.Infra.Persistence.Mappings
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(a => a.Status)
+            builder.Property(a => a.IsPublic)
                 .IsRequired();
 
             builder.Property(a => a.InstrumentId)

@@ -38,7 +38,7 @@ namespace Octavus.App.Api.Controllers.v1
         [HttpPost]
         public async Task<ActionResult<Instrument>> Create(Instrument dto)
         {
-           
+           dto.Id = Guid.NewGuid();
             var created = await _instrumentService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id },created);
         }
