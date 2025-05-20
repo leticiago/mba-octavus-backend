@@ -15,6 +15,14 @@ namespace Octavus.Infra.Persistence.Repositories
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
 
+        public async Task<List<Question>> GetByActivityIdAsync(Guid id)
+        {
+            return await _context.Set<Question>()
+                .Include(q => q.Answers)
+                .Where(q => q.ActivityId == id)
+                .ToListAsync();
+        }
+
         public override async Task<IEnumerable<Question>> GetAllAsync()
         {
             return await _context.Set<Question>()

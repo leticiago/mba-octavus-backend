@@ -10,6 +10,7 @@ namespace Octavus.Core.Application.Repositories
     public interface IQuestionRepository : IRepositoryBase<Question>
     {
         Task<Question?> GetByIdAsync(Guid id);
+        Task<List<Question>> GetByActivityIdAsync(Guid id);
 
     }
 

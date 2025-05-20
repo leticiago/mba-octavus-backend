@@ -20,11 +20,12 @@ namespace Octavus.Infra.Core.Services
             _repository = repository;
         }
 
-        public async Task<DragAndDropActivityDto> CreateAsync(string sequence)
+        public async Task<DragAndDropActivityDto> CreateAsync(Guid activityId, string sequence)
         {
             var activity = new DragAndDropActivity
             {
                 Id = Guid.NewGuid(),
+                ActivityId = activityId,
                 Text = sequence
             };
 
@@ -33,7 +34,7 @@ namespace Octavus.Infra.Core.Services
 
             return new DragAndDropActivityDto
             {
-                Id = activity.Id,
+                ActivityId = activity.Id,
                 OriginalSequence = sequence,
                 ShuffledOptions = Shuffle(sequence)
             };
@@ -45,7 +46,7 @@ namespace Octavus.Infra.Core.Services
 
             return all.Select(a => new DragAndDropActivityDto
             {
-                Id = a.Id,
+                ActivityId = a.Id,
                 OriginalSequence = a.Text,
                 ShuffledOptions = Shuffle(a.Text)
             }).ToList();
@@ -57,7 +58,7 @@ namespace Octavus.Infra.Core.Services
 
             return new DragAndDropActivityDto
             {
-                Id = entity.Id,
+                ActivityId = entity.Id,
                 OriginalSequence = entity.Text,
                 ShuffledOptions = Shuffle(entity.Text)
             };

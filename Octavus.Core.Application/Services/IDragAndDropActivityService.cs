@@ -9,7 +9,7 @@ namespace Octavus.Core.Application.Services
 {
     public interface IDragAndDropActivityService
     {
-        Task<DragAndDropActivityDto> CreateAsync(string activity);
+        Task<DragAndDropActivityDto> CreateAsync(Guid activityId,string activity);
         Task<List<DragAndDropActivityDto>> GetAllAsync();
         Task<DragAndDropActivityDto> GetByIdAsync(Guid id);
     }

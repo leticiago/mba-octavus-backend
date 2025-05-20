@@ -39,10 +39,17 @@ namespace Octavus.Infra.Core.Services
             return questions.Select(MapToDto).ToList();
         }
 
-        public async Task<QuestionDto> GetByIdAsync(Guid id)
+        public async Task<List<QuestionDto>?> GetByIdAsync(Guid id)
         {
-            var question = await _questionRepository.GetByIdAsync(id) ?? throw new Exception("Pergunta não encontrada.");
-            return MapToDto(question);
+            var response = new List<QuestionDto>(); 
+            var questions = await _questionRepository.GetByActivityIdAsync(id) ?? throw new Exception("Atividade não encontrada.");
+            
+            foreach (var question in questions)
+            {
+                response.Add(MapToDto(question));
+            }
+
+            return response;
         }
 
         public async Task UpdateAsync(Guid id, CreateQuestionDto dto)

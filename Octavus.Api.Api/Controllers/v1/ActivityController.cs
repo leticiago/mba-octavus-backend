@@ -4,6 +4,7 @@ using Octavus.Core.Application.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Xml;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -109,8 +110,8 @@ public class ActivityController : ControllerBase
     [HttpPost("draganddrop")]
     public async Task<IActionResult> CreateDragAndDrop([FromBody] DragAndDropActivityDto dto)
     {
-        var result = await _dragAndDropService.CreateAsync(dto.OriginalSequence);
-        return CreatedAtAction(nameof(GetDragAndDropById), new { id = result.Id }, result);
+        var result = await _dragAndDropService.CreateAsync(dto.ActivityId, dto.OriginalSequence);
+        return CreatedAtAction(nameof(GetDragAndDropById), new { id = result.ActivityId }, result);
     }
 
     [HttpGet("draganddrop")]
