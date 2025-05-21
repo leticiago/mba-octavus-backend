@@ -16,6 +16,13 @@ namespace Octavus.Infra.Persistence.Repositories
                 .Where(a => a.ProfessorId == professorId)
                 .ToListAsync();
         }
+
+        public async Task<List<Activity>> GetPublicActivitiesAsync()
+        {
+            return await _context.Set<Activity>()
+                .Where(a => a.IsPublic)
+                .ToListAsync();
+        }
     }
 
 }

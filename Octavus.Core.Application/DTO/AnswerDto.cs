@@ -25,4 +25,25 @@ namespace Octavus.Core.Application.DTO
         public string ResponseText { get; set; } = string.Empty;
     }
 
+    public class SubmitAnswersDto
+    {
+        public Guid ActivityId { get; set; }
+        public Guid StudentId { get; set; }
+
+        public List<AnswerSubmissionDto> Answers { get; set; }
+    }
+
+    public class AnswerSubmissionDto
+    {
+        public Guid QuestionId { get; set; }
+        public Guid SelectedAnswerId { get; set; }
+    }
+
+    public class SubmitDragAndDropDto
+    {
+        public Guid ActivityId { get; set; }
+        public Guid StudentId { get; set; }
+        public List<string> SelectedOptions { get; set; }
+    }
+
 }

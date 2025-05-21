@@ -13,10 +13,14 @@ namespace Octavus.Infra.Core.Services
         public class OpenTextAnswerService : IOpenTextAnswerService
     {
             private readonly IOpenTextAnswerRepository _openTextAnswerRepository;
+            private readonly IActivityStudentRepository _activityStudentRepository;
+        private readonly IQuestionRepository _questionRepository;
 
-            public OpenTextAnswerService(IOpenTextAnswerRepository openTextAnswerRepository)
+            public OpenTextAnswerService(IOpenTextAnswerRepository openTextAnswerRepository, IActivityStudentRepository activityStudentRepository, IQuestionRepository questionRepository)
             {
                 _openTextAnswerRepository = openTextAnswerRepository;
+                _activityStudentRepository = activityStudentRepository;
+                _questionRepository = questionRepository;
             }
 
             public async Task<OpenTextAnswer?> GetByIdAsync(Guid id)
@@ -28,6 +32,16 @@ namespace Octavus.Infra.Core.Services
         {
             await _openTextAnswerRepository.AddAsync(answer);
             await _openTextAnswerRepository.SaveChangesAsync();
+
+            var question = await _questionRepository.GetByIdAsync(answer.QuestionId);
+            var activity = new ActivityStudent 
+            { 
+                StudentId = answer.StudentId, 
+                ActivityId = question.ActivityId, 
+                Status = Octavus.Core.Domain.Enums.ActivityStatus.Done 
+            };
+            
+            await _activityStudentRepository.UpdateAsync(activity);
             return answer;
         }
 

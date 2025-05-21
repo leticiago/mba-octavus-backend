@@ -30,4 +30,10 @@ namespace Octavus.Core.Application.DTO
         public string Title { get; set; }
         public Guid ActivityId { get; set; }
     }
+
+    public class CreateQuestionOpenTextDto
+    {
+        public string Title { get; set; }
+        public Guid ActivityId { get; set; }
+    }
 }

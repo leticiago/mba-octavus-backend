@@ -12,4 +12,10 @@ namespace Octavus.Core.Application.DTO
         public string OriginalSequence { get; set; }
         public List<string> ShuffledOptions { get; set; } = new();
     }
+
+    public class CreateDragAndDropActivityDto
+    {
+        public Guid ActivityId { get; set; }
+        public string OriginalSequence { get; set; }
+    }
 }

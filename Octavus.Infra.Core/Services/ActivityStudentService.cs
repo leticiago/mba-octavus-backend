@@ -32,7 +32,8 @@ namespace Octavus.Infra.Core.Services
                 StudentId = dto.StudentId,
                 ActivityId = dto.ActivityId,
                 Status = ActivityStatus.Pending,
-                IsCorrected = false
+                IsCorrected = false,
+                Score = 0
             };
 
             await _repository.AddAsync(entity);
@@ -58,6 +59,22 @@ namespace Octavus.Infra.Core.Services
             return await _repository.GetPendingReviewsByProfessorAsync(professorId);
         }
 
+        public async Task<List<ActivityStudentDto>> GetActivitiesForStudentAsync(Guid studentId)
+        {
+            var activities = await _repository.GetActivitiesByStudentAsync(studentId);
+
+            return activities.Select(a => new ActivityStudentDto
+            {
+                ActivityId = a.ActivityId,
+                Title = a.Activity.Name,
+                Description = a.Activity.Description,
+                Status = a.Status,
+                Score = a.Score,
+                Comment = a.Comment,
+                IsCorrected = a.IsCorrected,
+                CorrectionDate = a.CorrectionDate
+            }).ToList();
+        }
 
     }
 

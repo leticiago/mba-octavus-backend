@@ -12,4 +12,6 @@ public class ActivityStudent : Entity
     public bool IsCorrected { get; set; } = false;
     public DateTime? CorrectionDate { get; set; }
 
+    public Activity Activity { get; set; }
+
 }

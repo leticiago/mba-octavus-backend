@@ -45,7 +45,35 @@ namespace Octavus.Infra.Persistence.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<List<ActivityStudent>> GetActivitiesByStudentAsync(Guid studentId)
+        {
+            return await _context.Set<ActivityStudent>()
+                .Include(a => a.Activity)
+                .Where(a => a.StudentId == studentId)
+                .ToListAsync();
+        }
 
+        public async Task<ActivityStudent?> GetActivityStudentAsync(Guid activityId, Guid studentId)
+        {
+            return await _context.Set<ActivityStudent>()
+                .FirstOrDefaultAsync(x => x.ActivityId == activityId && x.StudentId == studentId);
+        }
+
+        public async Task<List<StudentCompletedActivityDto>> GetCompletedActivitiesByStudentAsync(Guid studentId)
+        {
+            return await _context.Set<ActivityStudent>()
+                .Where(a => a.StudentId == studentId && a.IsCorrected)
+                .OrderByDescending(a => a.CorrectionDate)
+                .Select(a => new StudentCompletedActivityDto
+                {
+                    ActivityId = a.ActivityId,
+                    Title = a.Activity.Name,
+                    Type = a.Activity.Type.ToString(),
+                    Score = a.Score,
+                    CorrectionDate = a.CorrectionDate ?? DateTime.MinValue
+                })
+                .ToListAsync();
+        }
     }
 
 }

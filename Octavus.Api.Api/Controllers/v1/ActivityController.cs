@@ -72,6 +72,13 @@ public class ActivityController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("public")]
+    public async Task<IActionResult> GetPublicActivities()
+    {
+        var result = await _activityService.GetPublicActivitiesAsync();
+        return Ok(result);
+    }
+
     // ─── QUESTIONS AND ANSWERS ────────────────────────────────
 
     [HttpPost("questionandanswer")]
@@ -112,8 +119,9 @@ public class ActivityController : ControllerBase
     // ─── DRAG AND DROP ─────────────────────────────────────────
 
     [HttpPost("draganddrop")]
-    public async Task<IActionResult> CreateDragAndDrop([FromBody] DragAndDropActivityDto dto)
+    public async Task<IActionResult> CreateDragAndDrop([FromBody] CreateDragAndDropActivityDto dto)
     {
+
         var result = await _dragAndDropService.CreateAsync(dto.ActivityId, dto.OriginalSequence);
         return CreatedAtAction(nameof(GetDragAndDropById), new { id = result.ActivityId }, result);
     }
@@ -134,9 +142,14 @@ public class ActivityController : ControllerBase
 
     // ─── QUESTION OPEN TEXT ─────────────────────────────────────────
     [HttpPost("opentext/question")]
-    public async Task<IActionResult> CreateQuestionOpenText([FromBody] QuestionOpenTextDto dto)
+    public async Task<IActionResult> CreateQuestionOpenText([FromBody] CreateQuestionOpenTextDto dto)
     {
-        await _questionService.CreateAsync(dto);
+        QuestionOpenTextDto question = new QuestionOpenTextDto();
+        question.Title = dto.Title;
+        question.ActivityId = dto.ActivityId;
+        question.Id = Guid.NewGuid();
+
+        await _questionService.CreateAsync(question);
         return StatusCode(201);
     }
 

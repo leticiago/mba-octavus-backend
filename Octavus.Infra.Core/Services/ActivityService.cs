@@ -137,6 +137,18 @@ namespace Octavus.Infra.Core.Services
 
             await _repository.DeleteAsync(entity.Id);
         }
+
+        public async Task<List<ActivityDto>> GetPublicActivitiesAsync()
+        {
+            var activities = await _repository.GetPublicActivitiesAsync();
+
+            return activities.Select(a => new ActivityDto
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Description = a.Description
+            }).ToList();
+        }
     }
 
 }

@@ -36,9 +36,11 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<ActionResult<Profile>> Create(Profile dto)
+        public async Task<ActionResult<Profile>> Create(string profile)
         {
+            Profile dto = new Profile();
             dto.Id = Guid.NewGuid();
+            dto.Name = profile;
             var created = await _profileService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }

@@ -72,6 +72,9 @@ public class Startup
         services.AddScoped<IActivityService, ActivityService>();
         services.AddScoped<IProfessorStudentService, ProfessorStudentService>();
         services.AddScoped<IOpenTextAnswerService, OpenTextAnswerService>();
+        services.AddScoped<IActivityStudentService, ActivityStudentService>();
+        services.AddScoped<IStudentService, StudentService>();
+        
 
 
         
@@ -83,6 +86,8 @@ public class Startup
         services.AddScoped<IActivityRepository, ActivityRepository>();
         services.AddScoped<IProfessorStudentRepository, ProfessorStudentRepository>();
         services.AddScoped<IOpenTextAnswerRepository, OpenTextAnswerRepository>();
+        services.AddScoped<IActivityStudentRepository, ActivityStudentRepository>();
+        services.AddScoped<IAnswerRepository, AnswerRepository>();
 
         services.AddApiVersioning(options =>
         {

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Octavus.Core.Application.Repositories
 {
-    public interface IActivityRepository : IRepositoryBase<Activity>
+    public interface IAnswerRepository : IRepositoryBase<Answer>
     {
-        Task<IEnumerable<Activity>> GetByProfessorIdAsync(Guid professorId);
-        Task<List<Activity>> GetPublicActivitiesAsync();
+        Task<List<Answer>> GetCorrectAnswersAsync(IEnumerable<Guid> questionIds);
     }
-
 }
