@@ -70,6 +70,8 @@ public class Startup
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IDragAndDropActivityService, DragAndDropActivityService>();
         services.AddScoped<IActivityService, ActivityService>();
+        services.AddScoped<IProfessorStudentService, ProfessorStudentService>();
+        services.AddScoped<IOpenTextAnswerService, OpenTextAnswerService>();
 
 
         
@@ -79,6 +81,8 @@ public class Startup
         services.AddScoped<IQuestionRepository, QuestionRepository>();
         services.AddScoped<IDragAndDropActivityRepository, DragAndDropActivityRepository>();
         services.AddScoped<IActivityRepository, ActivityRepository>();
+        services.AddScoped<IProfessorStudentRepository, ProfessorStudentRepository>();
+        services.AddScoped<IOpenTextAnswerRepository, OpenTextAnswerRepository>();
 
         services.AddApiVersioning(options =>
         {

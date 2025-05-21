@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Octavus.Core.Domain.Enums;
+using System;
 
 namespace Octavus.Core.Domain.Entities;
 public class Activity : Entity

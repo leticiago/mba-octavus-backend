@@ -14,23 +14,17 @@ namespace Octavus.Infra.Core.Services
             _questionRepository = questionRepository;
         }
 
-        public async Task<QuestionDto> CreateAsync(CreateQuestionDto dto)
+        public async Task<Question> CreateAsync(QuestionOpenTextDto dto)
         {
             var question = new Question
             {
                 Id = Guid.NewGuid(),
                 Title = dto.Title,
-                Answers = dto.Answers.Select(a => new Answer
-                {
-                    Id = Guid.NewGuid(),
-                    QuestionId = Guid.Empty,
-                    Text = a.Text,
-                    IsCorrect = a.IsCorrect
-                }).ToList()
+                ActivityId = dto.ActivityId
             };
 
             await _questionRepository.AddAsync(question);
-            return MapToDto(question);
+            return question;
         }
 
         public async Task<List<QuestionDto>> GetAllAsync()

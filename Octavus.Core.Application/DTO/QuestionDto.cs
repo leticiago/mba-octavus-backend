@@ -24,4 +24,10 @@ namespace Octavus.Core.Application.DTO
         public List<AnswerDto> Answers { get; set; } = new();
     }
 
+    public class QuestionOpenTextDto
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public Guid ActivityId { get; set; }
+    }
 }

@@ -9,7 +9,8 @@ namespace Octavus.Core.Domain.Enums
     public enum ActivityType
     {
         QuestionAndAnswer,
-        DragAndDrop
+        DragAndDrop,
+        OpenText
     }
 
     public static class ActivityTypeExtensions

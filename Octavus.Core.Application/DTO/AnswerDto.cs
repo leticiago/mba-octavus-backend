@@ -18,4 +18,11 @@ namespace Octavus.Core.Application.DTO
         public bool IsCorrect { get; set; }
     }
 
+    public class AnswerOpenTextDto
+    {
+        public Guid QuestionId { get; set; }
+        public Guid StudentId { get; set; }
+        public string ResponseText { get; set; } = string.Empty;
+    }
+
 }

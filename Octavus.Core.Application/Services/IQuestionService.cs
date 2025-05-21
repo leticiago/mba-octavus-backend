@@ -1,4 +1,5 @@
 ﻿using Octavus.Core.Application.DTO;
+using Octavus.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Octavus.Core.Application.Services
 {
     public interface IQuestionService
     {
-        Task<QuestionDto> CreateAsync(CreateQuestionDto dto);
+        Task<Question> CreateAsync(QuestionOpenTextDto dto);
         Task AddQuestionsBatchAsync(CreateQuestionBatchDto dto);
         Task<List<QuestionDto>> GetAllAsync();
         Task<List<QuestionDto>> GetByIdAsync(Guid id);

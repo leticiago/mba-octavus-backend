@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Xml;
+using Octavus.Core.Domain.Entities;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -13,15 +14,18 @@ public class ActivityController : ControllerBase
     private readonly IActivityService _activityService;
     private readonly IQuestionService _questionService;
     private readonly IDragAndDropActivityService _dragAndDropService;
+    private readonly IOpenTextAnswerService _openTextAnswerService;
 
     public ActivityController(
         IActivityService activityService,
         IQuestionService questionService,
-        IDragAndDropActivityService dragAndDropService)
+        IDragAndDropActivityService dragAndDropService,
+        IOpenTextAnswerService openTextAnswerService)
     {
         _activityService = activityService;
         _questionService = questionService;
         _dragAndDropService = dragAndDropService;
+        _openTextAnswerService = openTextAnswerService;
     }
 
     // ─── ACTIVITY ─────────────────────────────────────────────
@@ -125,6 +129,35 @@ public class ActivityController : ControllerBase
     public async Task<IActionResult> GetDragAndDropById(Guid id)
     {
         var result = await _dragAndDropService.GetByIdAsync(id);
+        return Ok(result);
+    }
+
+    // ─── QUESTION OPEN TEXT ─────────────────────────────────────────
+    [HttpPost("opentext/question")]
+    public async Task<IActionResult> CreateQuestionOpenText([FromBody] QuestionOpenTextDto dto)
+    {
+        await _questionService.CreateAsync(dto);
+        return StatusCode(201);
+    }
+
+    [HttpGet("opentext/question/{questionId}")]
+    public async Task<IActionResult> GetQuestionOpenTextById(Guid questionId)
+    {
+        var result = await _questionService.GetByIdAsync(questionId);
+        return Ok(result);
+    }
+
+    [HttpPost("opentext/answer")]
+    public async Task<IActionResult> CreateAnswerOpenText([FromBody] OpenTextAnswer dto)
+    {
+        await _openTextAnswerService.CreateAsync(dto);
+        return StatusCode(201);
+    }
+
+    [HttpGet("opentext/answer/{answerId}")]
+    public async Task<IActionResult> GetAnswerOpenTextById(Guid answerId)
+    {
+        var result = await _openTextAnswerService.GetByIdAsync(answerId);
         return Ok(result);
     }
 }
