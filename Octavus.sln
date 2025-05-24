@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Octavus.Infra.Persistence",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Octavus.App.Api", "Octavus.Api.Api\Octavus.App.Api.csproj", "{CFBD4C10-6538-4A08-8955-545E7FCE3F0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octavus.Tests", "Octavus.Tests\Octavus.Tests.csproj", "{23E83381-86F5-40D8-8D19-51B116A83DBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{CFBD4C10-6538-4A08-8955-545E7FCE3F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFBD4C10-6538-4A08-8955-545E7FCE3F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFBD4C10-6538-4A08-8955-545E7FCE3F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E83381-86F5-40D8-8D19-51B116A83DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E83381-86F5-40D8-8D19-51B116A83DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E83381-86F5-40D8-8D19-51B116A83DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E83381-86F5-40D8-8D19-51B116A83DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{725A9485-0EFB-4207-B93B-4F69057F4E69} = {2445AF92-D772-48B1-97F8-E6CE58F90022}
 		{0FD9F9E8-206C-44CC-9344-415A6857E3FF} = {2445AF92-D772-48B1-97F8-E6CE58F90022}
 		{CFBD4C10-6538-4A08-8955-545E7FCE3F0B} = {41DA788C-0DAC-4357-9DBD-976A9368A24A}
+		{23E83381-86F5-40D8-8D19-51B116A83DBE} = {543FB2D5-9D28-4ED2-8A3B-E75A4E98A0CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4D19EB2-950D-4963-A0F9-8034CAC2ADA2}
