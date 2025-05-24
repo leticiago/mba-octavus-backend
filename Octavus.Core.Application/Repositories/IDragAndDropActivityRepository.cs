@@ -9,6 +9,7 @@ namespace Octavus.Core.Application.Repositories
 {
     public interface IDragAndDropActivityRepository : IRepositoryBase<DragAndDropActivity>
     {
+        Task<DragAndDropActivity> GetByActivityIdAsync(Guid activityId);
     }
 
 }

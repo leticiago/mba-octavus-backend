@@ -18,4 +18,18 @@ namespace Octavus.Core.Application.DTO
         public Guid ActivityId { get; set; }
         public string OriginalSequence { get; set; }
     }
+
+    public class DragAndDropSubmissionDto
+    {
+        public Guid ActivityId { get; set; }
+        public Guid StudentId { get; set; }
+        public string Answer { get; set; } 
+    }
+
+    public class ActivityScoreResultDto
+    {
+        public int Score { get; set; }
+        public int Total { get; set; }
+        public int Correct { get; set; }
+    }
 }

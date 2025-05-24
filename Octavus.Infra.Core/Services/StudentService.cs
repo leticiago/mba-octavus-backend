@@ -53,5 +53,46 @@ namespace Octavus.Infra.Core.Services
             return await _activityStudentRepository.GetCompletedActivitiesByStudentAsync(studentId);
         }
 
+        public async Task<ActivityScoreResultDto> GradeDragAndDropAsync(DragAndDropSubmissionDto dto)
+        {
+            var activity = await _dragAndDropActivityRepository.GetByActivityIdAsync(dto.ActivityId);
+            if (activity == null)
+                throw new Exception("Atividade não encontrada");
+
+            var correctOptions = activity.Text.Split(';');
+            var studentOptions = dto.Answer.Split(';');
+
+            int total = correctOptions.Length;
+            int correct = correctOptions
+                .Zip(studentOptions, (c, s) => c.Trim() == s.Trim())
+                .Count(x => x);
+
+            int score = (int)((double)correct / total * 100);
+
+            var activityStudent = await _activityStudentRepository.GetActivityStudentAsync(dto.ActivityId, dto.StudentId);
+            if (activityStudent == null)
+            {
+                activityStudent = new ActivityStudent
+                {
+                    Id = Guid.NewGuid(),
+                    StudentId = dto.StudentId,
+                    ActivityId = dto.ActivityId,
+                };
+                await _activityStudentRepository.AddAsync(activityStudent);
+            }
+
+            activityStudent.Score = score;
+            activityStudent.IsCorrected = true;
+            activityStudent.CorrectionDate = DateTime.UtcNow;
+
+            await _activityStudentRepository.SaveChangesAsync();
+
+            return new ActivityScoreResultDto
+            {
+                Score = score,
+                Total = total,
+                Correct = correct
+            };
+        }
     }
 }

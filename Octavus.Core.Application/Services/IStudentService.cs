@@ -11,5 +11,6 @@ namespace Octavus.Core.Application.Services
     {
         Task<int> SubmitAnswersAsync(SubmitAnswersDto dto);
         Task<List<StudentCompletedActivityDto>> GetStudentCompletedActivitiesAsync(Guid studentId);
+        Task<ActivityScoreResultDto> GradeDragAndDropAsync(DragAndDropSubmissionDto dto);
     }
 }

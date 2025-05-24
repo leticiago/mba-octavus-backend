@@ -55,8 +55,8 @@ namespace Octavus.Infra.Persistence.Repositories
 
         public async Task<ActivityStudent?> GetActivityStudentAsync(Guid activityId, Guid studentId)
         {
-            return await _context.Set<ActivityStudent>()
-                .FirstOrDefaultAsync(x => x.ActivityId == activityId && x.StudentId == studentId);
+            return _context.Set<ActivityStudent>()
+                .Where(x => x.ActivityId == activityId && x.StudentId == studentId).FirstOrDefault();
         }
 
         public async Task<List<StudentCompletedActivityDto>> GetCompletedActivitiesByStudentAsync(Guid studentId)

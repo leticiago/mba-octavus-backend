@@ -1,0 +1,69 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Octavus.Core.Application.DTO;
+using Octavus.Core.Application.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
+using System.Xml;
+using Octavus.Core.Domain.Entities;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ActivityController : ControllerBase
+{
+    private readonly IActivityService _activityService;
+
+    public ActivityController(IActivityService activityService)
+    {
+        _activityService = activityService;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateActivityDto dto)
+    {
+        var result = await _activityService.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _activityService.GetAllAsync();
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _activityService.GetByIdAsync(id);
+        return Ok(result);
+    }
+
+    [HttpGet("professor/{professorId}")]
+    public async Task<IActionResult> GetByProfessor(Guid professorId)
+    {
+        var result = await _activityService.GetByProfessorIdAsync(professorId);
+        return Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] CreateActivityDto dto)
+    {
+        await _activityService.UpdateAsync(id, dto);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _activityService.DeleteAsync(id);
+        return NoContent();
+    }
+
+    [HttpGet("public")]
+    public async Task<IActionResult> GetPublic()
+    {
+        var result = await _activityService.GetPublicActivitiesAsync();
+        return Ok(result);
+    }
+}

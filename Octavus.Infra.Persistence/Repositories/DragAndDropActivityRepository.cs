@@ -11,6 +11,11 @@ namespace Octavus.Infra.Persistence.Repositories
     public class DragAndDropActivityRepository : RepositoryBase<DragAndDropActivity>, IDragAndDropActivityRepository
     {
         public DragAndDropActivityRepository(Context context) : base(context) { }
+
+        public async Task<DragAndDropActivity> GetByActivityIdAsync(Guid activityId)
+        {
+            return _context.Set<DragAndDropActivity>().Where(d => d.ActivityId == activityId).FirstOrDefault();
+        }
     }
 
 

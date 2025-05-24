@@ -44,6 +44,13 @@ namespace Octavus.Controllers.v1
             var result = await _studentService.GetStudentCompletedActivitiesAsync(studentId);
             return Ok(result);
         }
+
+        [HttpPost("drag-and-drop/submit")]
+        public async Task<IActionResult> SubmitDragAndDrop([FromBody] DragAndDropSubmissionDto dto)
+        {
+            var result = await _studentService.GradeDragAndDropAsync(dto);
+            return Ok(result);
+        }
     }
 
 }

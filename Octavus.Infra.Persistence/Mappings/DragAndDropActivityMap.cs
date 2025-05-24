@@ -24,7 +24,10 @@ namespace Octavus.Infra.Persistence.Mappings
                 .IsRequired()
                 .HasMaxLength(300);
 
-            builder.HasOne<Activity>().WithMany().HasForeignKey(a => a.ActivityId);
+            builder.HasOne(a => a.Activity)
+                   .WithMany()
+                   .HasForeignKey(a => a.ActivityId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 
