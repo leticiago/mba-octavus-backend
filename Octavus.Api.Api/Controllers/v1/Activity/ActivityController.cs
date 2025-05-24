@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System;
 using System.Xml;
 using Octavus.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,6 +20,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles ="Professor, Colaborador")]
     public async Task<IActionResult> Create([FromBody] CreateActivityDto dto)
     {
         var result = await _activityService.CreateAsync(dto);
@@ -26,6 +28,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Professor")]
     public async Task<IActionResult> GetAll()
     {
         var result = await _activityService.GetAllAsync();
@@ -33,6 +36,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Professor, Colaborador, Aluno")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _activityService.GetByIdAsync(id);
@@ -40,6 +44,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpGet("professor/{professorId}")]
+    [Authorize(Roles = "Professor")]
     public async Task<IActionResult> GetByProfessor(Guid professorId)
     {
         var result = await _activityService.GetByProfessorIdAsync(professorId);
@@ -47,6 +52,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Professor, Colaborador")]
     public async Task<IActionResult> Update(Guid id, [FromBody] CreateActivityDto dto)
     {
         await _activityService.UpdateAsync(id, dto);
@@ -54,6 +60,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Professor, Colaborador")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _activityService.DeleteAsync(id);
@@ -61,6 +68,7 @@ public class ActivityController : ControllerBase
     }
 
     [HttpGet("public")]
+    [Authorize(Roles = "Professor, Colaborador, Aluno")]
     public async Task<IActionResult> GetPublic()
     {
         var result = await _activityService.GetPublicActivitiesAsync();

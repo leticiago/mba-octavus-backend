@@ -11,6 +11,7 @@ namespace Octavus.Core.Application.Repositories
     {
         Task<IEnumerable<Activity>> GetByProfessorIdAsync(Guid professorId);
         Task<List<Activity>> GetPublicActivitiesAsync();
+        Task<List<Activity>> GetAllByIds(List<Guid> activities);
     }
 
 }

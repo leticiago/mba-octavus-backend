@@ -3,6 +3,7 @@ using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Services;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1.Activity
 {
@@ -18,6 +19,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpPost]
+        [Authorize(Roles = "Professor, Colaborador")]
         public async Task<IActionResult> Create([FromBody] CreateDragAndDropActivityDto dto)
         {
             var result = await _dragAndDropService.CreateAsync(dto.ActivityId, dto.OriginalSequence);
@@ -25,6 +27,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpGet]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _dragAndDropService.GetAllAsync();
@@ -32,6 +35,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _dragAndDropService.GetByIdAsync(id);

@@ -1,5 +1,6 @@
 ﻿using global::Octavus.Core.Application.DTO;
 using global::Octavus.Core.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Octavus.Infra.Core.Services;
 using System;
@@ -32,6 +33,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpPut("manage-student")]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> ManageStudent([FromBody] UpdateProfessorStudentDto dto)
         {
             await _professorStudentService.UpdateLinkAsync(dto);
@@ -39,6 +41,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpGet("{professorId}/students")]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> GetStudentsByProfessor(Guid professorId)
         {
             var result = await _professorStudentService.GetStudentsByProfessorAsync(professorId);
@@ -46,6 +49,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpPost("assign-activity")]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> AssignActivityToStudent([FromBody] AssignActivityDto dto)
         {
             await _activityStudentService.AssignActivityToStudentAsync(dto);
@@ -53,6 +57,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpPut("evaluate-activity")]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> EvaluateActivity([FromBody] EvaluateActivityDto dto)
         {
             await _activityStudentService.EvaluateActivityAsync(dto);
@@ -60,6 +65,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpGet("{professorId}/pending-reviews")]
+        [Authorize(Roles = "Professor")]
         public async Task<IActionResult> GetPendingReviews(Guid professorId)
         {
             var result = await _activityStudentService.GetPendingReviewsAsync(professorId);

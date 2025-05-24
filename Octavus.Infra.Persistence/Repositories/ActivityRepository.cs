@@ -23,6 +23,13 @@ namespace Octavus.Infra.Persistence.Repositories
                 .Where(a => a.IsPublic)
                 .ToListAsync();
         }
+
+        public async Task<List<Activity>> GetAllByIds(List<Guid> activities)
+        {
+            return await _context.Set<Activity>()
+                .Where(x => activities.Contains(x.Id))
+                .ToListAsync();
+        }
     }
 
 }

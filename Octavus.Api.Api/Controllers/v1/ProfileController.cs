@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using Octavus.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1
 {
@@ -36,6 +37,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Profile>> Create(string profile)
         {
             Profile dto = new Profile();
@@ -46,6 +48,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, Profile dto)
         {
             if (id != dto.Id) return BadRequest("ID mismatch");
@@ -55,6 +58,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _profileService.DeleteAsync(id);

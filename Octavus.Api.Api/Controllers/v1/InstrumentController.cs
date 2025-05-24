@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using Octavus.Core.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1
 {
@@ -27,6 +28,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Instrument>> GetById(Guid id)
         {
             var instrument = await _instrumentService.GetByIdAsync(id);
@@ -36,6 +38,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Instrument>> Create(Instrument instrument)
         {
             Instrument dto = new Instrument()
@@ -48,6 +51,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, Instrument dto)
         {
             if (id != dto.Id) return BadRequest("ID mismatch");
@@ -57,6 +61,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _instrumentService.DeleteAsync(id);

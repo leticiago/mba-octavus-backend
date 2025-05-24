@@ -4,6 +4,7 @@ using Octavus.Core.Application.Services;
 using Octavus.Core.Domain.Entities;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1.Activity
 {
@@ -21,6 +22,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpPost("question")]
+        [Authorize(Roles = "Professor, Colaborador")]
         public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionOpenTextDto dto)
         {
             var question = new QuestionOpenTextDto
@@ -35,6 +37,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpGet("question/{questionId}")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
         public async Task<IActionResult> GetQuestion(Guid questionId)
         {
             var result = await _questionService.GetByIdAsync(questionId);
@@ -42,6 +45,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpPost("answer")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
         public async Task<IActionResult> CreateAnswer([FromBody] OpenTextAnswer dto)
         {
             await _openTextAnswerService.CreateAsync(dto);
@@ -49,6 +53,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpGet("answer/{answerId}")]
+        [Authorize(Roles = "Professor, Aluno")]
         public async Task<IActionResult> GetAnswer(Guid answerId)
         {
             var result = await _openTextAnswerService.GetByIdAsync(answerId);

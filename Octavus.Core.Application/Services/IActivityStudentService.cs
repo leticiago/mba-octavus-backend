@@ -13,6 +13,7 @@ namespace Octavus.Core.Application.Services
         Task EvaluateActivityAsync(EvaluateActivityDto dto);
         Task<List<PendingActivityReviewDto>> GetPendingReviewsAsync(Guid professorId);
         Task<List<ActivityStudentDto>> GetActivitiesForStudentAsync(Guid studentId);
+        Task<StudentMetricsDto> GetMetricsByStudentAsync(Guid studentId);
 
     }
 

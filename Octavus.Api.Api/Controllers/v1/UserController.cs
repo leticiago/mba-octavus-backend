@@ -3,6 +3,7 @@ using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Services;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1
 {
@@ -25,6 +26,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var users = await _service.GetAllAsync();
@@ -39,6 +41,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Aluno, Professor, Colaborador")]
         public async Task<IActionResult> Update(Guid id, [FromBody] CreateUserDto dto)
         {
             await _service.UpdateAsync(id, dto);
@@ -46,6 +49,7 @@ namespace Octavus.App.Api.Controllers.v1
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Aluno, Professor, Colaborador")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _service.DeleteAsync(id);

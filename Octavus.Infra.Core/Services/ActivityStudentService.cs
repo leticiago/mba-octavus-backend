@@ -3,6 +3,7 @@ using Octavus.Core.Application.Repositories;
 using Octavus.Core.Application.Services;
 using Octavus.Core.Domain.Entities;
 using Octavus.Core.Domain.Enums;
+using Octavus.Infra.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace Octavus.Infra.Core.Services
     public class ActivityStudentService : IActivityStudentService
     {
         private readonly IActivityStudentRepository _repository;
+        private readonly IActivityRepository _activityRepository;
 
-        public ActivityStudentService(IActivityStudentRepository repository)
+        public ActivityStudentService(IActivityStudentRepository repository, IActivityRepository activityRepository)
         {
             _repository = repository;
+            _activityRepository = activityRepository;
         }
 
         public async Task AssignActivityToStudentAsync(AssignActivityDto dto)
@@ -74,6 +77,38 @@ namespace Octavus.Infra.Core.Services
                 IsCorrected = a.IsCorrected,
                 CorrectionDate = a.CorrectionDate
             }).ToList();
+        }
+
+        public async Task<StudentMetricsDto> GetMetricsByStudentAsync(Guid studentId)
+        {
+            var submissions = await _repository.GetActivitiesByStudentAsync(studentId);
+
+            if (!submissions.Any())
+                return new StudentMetricsDto
+                {
+                    TotalActivitiesDone = 0,
+                    AverageScore = 0,
+                    AverageScoreByActivityType = new()
+                };
+
+            var activityIds = submissions.Select(s => s.ActivityId).Distinct();
+            var activities = await _activityRepository.GetAllByIds(activityIds.ToList());
+
+            var joined = from s in submissions
+                         join a in activities on s.ActivityId equals a.Id
+                         where s.Score.HasValue
+                         select new { a.Type, s.Score };
+
+            var avgByType = joined
+                .GroupBy(x => x.Type.ToString())
+                .ToDictionary(g => g.Key, g => g.Average(x => x.Score.Value));
+
+            return new StudentMetricsDto
+            {
+                TotalActivitiesDone = submissions.Count,
+                AverageScore = joined.Average(x => x.Score.Value),
+                AverageScoreByActivityType = avgByType
+            };
         }
 
     }

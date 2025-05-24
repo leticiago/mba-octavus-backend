@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System;
 using Octavus.Core.Application.DTO;
 using Octavus.Infra.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.Controllers.v1
 {
@@ -21,13 +22,15 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpGet("{studentId}")]
+        [Authorize(Roles = "Aluno")]
         public async Task<IActionResult> GetActivities(Guid studentId)
         {
             var result = await _activityStudentService.GetActivitiesForStudentAsync(studentId);
             return Ok(result);
         }
 
-        [HttpPost("submit-answers")]
+        [HttpPost("submit/question-and-answer")]
+        [Authorize(Roles = "Aluno")]
         public async Task<IActionResult> SubmitAnswers([FromBody] SubmitAnswersDto dto)
         {
             var score = await _studentService.SubmitAnswersAsync(dto);
@@ -38,18 +41,28 @@ namespace Octavus.Controllers.v1
             });
         }
 
-        [HttpGet("students/{studentId}/completed-activities")]
+        [HttpGet("{studentId}/completed-activities")]
+        [Authorize(Roles = "Aluno")]
         public async Task<IActionResult> GetCompletedActivities(Guid studentId)
         {
             var result = await _studentService.GetStudentCompletedActivitiesAsync(studentId);
             return Ok(result);
         }
 
-        [HttpPost("drag-and-drop/submit")]
+        [HttpPost("submit/drag-and-drop")]
+        [Authorize(Roles = "Aluno")]
         public async Task<IActionResult> SubmitDragAndDrop([FromBody] DragAndDropSubmissionDto dto)
         {
             var result = await _studentService.GradeDragAndDropAsync(dto);
             return Ok(result);
+        }
+
+        [HttpGet("{studentId}/metrics")]
+        [Authorize(Roles = "Aluno, Professor")]
+        public async Task<IActionResult> GetMetricsByStudent(Guid studentId)
+        {
+            var metrics = await _activityStudentService.GetMetricsByStudentAsync(studentId);
+            return Ok(metrics);
         }
     }
 

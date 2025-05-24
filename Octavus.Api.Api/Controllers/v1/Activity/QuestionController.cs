@@ -4,6 +4,7 @@ using Octavus.Core.Application.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.App.Api.Controllers.v1.Activity
 {
@@ -19,6 +20,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpPost]
+        [Authorize(Roles = "Professor, Colaborador")]
         public async Task<IActionResult> CreateBatch([FromBody] CreateQuestionBatchDto dto)
         {
             await _questionService.AddQuestionsBatchAsync(dto);
@@ -26,13 +28,15 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpGet]
+        [Authorize(Roles = "Professor")]
         public async Task<ActionResult<List<QuestionDto>>> GetAll()
         {
             var questions = await _questionService.GetAllAsync();
             return Ok(questions);
         }
 
-        [HttpGet("byactivity/{activityId}")]
+        [HttpGet("activity/{activityId}")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
         public async Task<IActionResult> GetByActivity(Guid activityId)
         {
             var result = await _questionService.GetByIdAsync(activityId);
@@ -40,6 +44,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Professor, Colaborador")]
         public async Task<IActionResult> Update(Guid id, [FromBody] CreateQuestionDto dto)
         {
             await _questionService.UpdateAsync(id, dto);
@@ -47,6 +52,7 @@ namespace Octavus.App.Api.Controllers.v1.Activity
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Professor, Colaborador")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _questionService.DeleteAsync(id);
