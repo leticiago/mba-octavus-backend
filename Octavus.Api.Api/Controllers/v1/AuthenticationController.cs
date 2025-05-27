@@ -6,14 +6,15 @@ using Octavus.Authentication.Request;
 using Octavus.Infra.Core.Services;
 using System.Collections.Generic;
 using Octavus.Core.Application.DTO;
+using Octavus.Core.Application.Services;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly KeycloakService _keycloakService;
+    private readonly IKeycloakService _keycloakService;
 
-    public AuthenticationController(KeycloakService keycloakService)
+    public AuthenticationController(IKeycloakService keycloakService)
     {
         _keycloakService = keycloakService;
     }
