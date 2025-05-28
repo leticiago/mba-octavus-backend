@@ -7,6 +7,9 @@
     <DebugType>full</DebugType>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Remove="C:\Users\letic\.nuget\packages\microsoft.net.compilers\1.0.0\build\..\tools\**" />
