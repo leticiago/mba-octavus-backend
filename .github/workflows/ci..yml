@@ -1,0 +1,37 @@
+name: CI - Build, Test, Lint, Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🧾 Checkout do código
+      uses: actions/checkout@v3
+
+    - name: 🛠️ Instalar .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📦 Restaurar dependências
+      run: dotnet restore
+
+    - name: 🔍 Verificar formato do código
+      run: dotnet format --verify-no-changes
+      continue-on-error: false
+
+    - name: 🧪 Rodar testes com cobertura
+      run: >
+        dotnet test --no-restore --verbosity normal
+        /p:CollectCoverage=true
+        /p:CoverletOutput=TestResults/
+        /p:CoverletOutputFormat=cobertura
+
+    - name: 🛡️ Verificar pacotes vulneráveis
+      run: dotnet list package --vulnerable
