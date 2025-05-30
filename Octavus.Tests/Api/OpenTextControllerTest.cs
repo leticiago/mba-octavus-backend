@@ -50,7 +50,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var statusResult = result as StatusCodeResult;
             Assert.IsNotNull(statusResult);
-            Assert.AreEqual(201, statusResult.StatusCode);
+            Assert.That(statusResult.StatusCode, Is.EqualTo(201));
             _questionServiceMock.Verify(s => s.CreateAsync(It.Is<QuestionOpenTextDto>(q =>
                 q.Title == dto.Title && q.ActivityId == dto.ActivityId && q.Id != Guid.Empty)), Times.Once);
         }
@@ -88,9 +88,9 @@ namespace Octavus.Tests.Controllers
 
             var actualList = okResult.Value as List<QuestionDto>;
             Assert.IsNotNull(actualList);
-            Assert.AreEqual(1, actualList.Count);
-            Assert.AreEqual(question.Id, actualList[0].Id);
-            Assert.AreEqual(question.Title, actualList[0].Title);
+            Assert.That(actualList.Count, Is.EqualTo(1));
+            Assert.That(actualList[0].Id, Is.EqualTo(question.Id));
+            Assert.That(actualList[0].Title, Is.EqualTo(question.Title));
         }
 
 
@@ -113,7 +113,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var statusResult = result as StatusCodeResult;
             Assert.IsNotNull(statusResult);
-            Assert.AreEqual(201, statusResult.StatusCode);
+            Assert.That(statusResult.StatusCode, Is.EqualTo(201));
             _openTextAnswerServiceMock.Verify(s => s.CreateAsync(dto), Times.Once);
         }
 
@@ -137,7 +137,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(answer, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(answer));
         }
     }
 }

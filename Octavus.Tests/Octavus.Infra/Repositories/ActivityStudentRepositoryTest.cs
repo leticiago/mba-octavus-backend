@@ -80,8 +80,8 @@ namespace Octavus.Tests.Repositories
 
             var result = await _repository.GetByStudentAndActivityAsync(studentId, activityId);
             Assert.IsNotNull(result);
-            Assert.AreEqual(studentId, result!.StudentId);
-            Assert.AreEqual(activityId, result.ActivityId);
+            Assert.That(result!.StudentId, Is.EqualTo(studentId));
+            Assert.That(result.ActivityId, Is.EqualTo(activityId));
         }
 
         [Test]
@@ -143,10 +143,10 @@ namespace Octavus.Tests.Repositories
 
             Assert.That(results, Has.Exactly(1).Items);
             var dto = results.First();
-            Assert.AreEqual(studentId, dto.StudentId);
-            Assert.AreEqual("Aluno 1", dto.StudentName);
-            Assert.AreEqual(activityId, dto.ActivityId);
-            Assert.AreEqual("Atividade 1", dto.ActivityName);
+            Assert.That(dto.StudentId, Is.EqualTo(studentId));
+            Assert.That(dto.StudentName, Is.EqualTo("Aluno 1"));
+            Assert.That(dto.ActivityId, Is.EqualTo(activityId));
+            Assert.That(dto.ActivityName, Is.EqualTo("Atividade 1"));
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Octavus.Tests.Repositories
 
             Assert.That(results, Has.Exactly(1).Items);
             Assert.IsNotNull(results.First().Activity);
-            Assert.AreEqual("Atividade 1", results.First().Activity.Name);
+            Assert.That(results.First().Activity.Name, Is.EqualTo("Atividade 1"));
         }
 
         [Test]
@@ -202,8 +202,8 @@ namespace Octavus.Tests.Repositories
 
             var result = await _repository.GetActivityStudentAsync(activityId, studentId);
             Assert.IsNotNull(result);
-            Assert.AreEqual(studentId, result!.StudentId);
-            Assert.AreEqual(activityId, result.ActivityId);
+            Assert.That(result!.StudentId, Is.EqualTo(studentId));
+            Assert.That(result.ActivityId, Is.EqualTo(activityId));
         }
 
         [Test]
@@ -218,7 +218,7 @@ namespace Octavus.Tests.Repositories
         {
             var studentId = Guid.NewGuid();
 
-            var activity1 = new Activity { Id = Guid.NewGuid(), Name = "Atividade 1", Type = ActivityType.OpenText.ToString(), Description = "description",  Level = Level.Intermediate.ToString()};
+            var activity1 = new Activity { Id = Guid.NewGuid(), Name = "Atividade 1", Type = ActivityType.OpenText.ToString(), Description = "description", Level = Level.Intermediate.ToString() };
             var activity2 = new Activity { Id = Guid.NewGuid(), Name = "Atividade 2", Type = ActivityType.QuestionAndAnswer.ToString(), Description = "description", Level = Level.Intermediate.ToString() };
 
             var completed1 = new ActivityStudent

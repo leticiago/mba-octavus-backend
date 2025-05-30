@@ -159,9 +159,9 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetStudentsByProfessorAsync(professorId);
 
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("Aluno 1", result[0].Name);
-            Assert.AreEqual("Piano", result[1].Instrument);
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result[0].Name, Is.EqualTo("Aluno 1"));
+            Assert.That(result[1].Instrument, Is.EqualTo("Piano"));
         }
     }
 }

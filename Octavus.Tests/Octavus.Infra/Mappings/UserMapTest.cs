@@ -34,11 +34,11 @@ namespace Octavus.Tests.Mappings
 
             var entity = context.Model.FindEntityType(typeof(User));
             Assert.IsNotNull(entity);
-            Assert.AreEqual("Users", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("Users"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.Single().Name);
+            Assert.That(key.Properties.Single().Name, Is.EqualTo("Id"));
         }
 
         [Test]
@@ -51,22 +51,22 @@ namespace Octavus.Tests.Mappings
             var emailProp = entity.FindProperty(nameof(User.Email));
             Assert.IsNotNull(emailProp);
             Assert.IsFalse(emailProp.IsNullable);
-            Assert.AreEqual(150, emailProp.GetMaxLength());
+            Assert.That(emailProp.GetMaxLength(), Is.EqualTo(150));
 
             var passwordProp = entity.FindProperty(nameof(User.Password));
             Assert.IsNotNull(passwordProp);
             Assert.IsFalse(passwordProp.IsNullable);
-            Assert.AreEqual(100, passwordProp.GetMaxLength());
+            Assert.That(passwordProp.GetMaxLength(), Is.EqualTo(100));
 
             var nameProp = entity.FindProperty(nameof(User.Name));
             Assert.IsNotNull(nameProp);
             Assert.IsFalse(nameProp.IsNullable);
-            Assert.AreEqual(100, nameProp.GetMaxLength());
+            Assert.That(nameProp.GetMaxLength(), Is.EqualTo(100));
 
             var contactProp = entity.FindProperty(nameof(User.Contact));
             Assert.IsNotNull(contactProp);
             Assert.IsFalse(contactProp.IsNullable);
-            Assert.AreEqual(50, contactProp.GetMaxLength());
+            Assert.That(contactProp.GetMaxLength(), Is.EqualTo(50));
 
             var instrumentIdProp = entity.FindProperty(nameof(User.InstrumentId));
             Assert.IsNotNull(instrumentIdProp);

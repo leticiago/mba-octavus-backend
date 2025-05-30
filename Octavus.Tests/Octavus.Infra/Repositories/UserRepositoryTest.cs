@@ -49,7 +49,7 @@ namespace Octavus.Tests.Repositories
             var user = await _repository.GetByEmailAsync(email);
 
             Assert.IsNotNull(user);
-            Assert.AreEqual(email, user.Email);
+            Assert.That(user.Email, Is.EqualTo(email));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Octavus.Tests.Repositories
 
             var found = await _repository.GetByEmailAsync(user.Email);
             Assert.IsNotNull(found);
-            Assert.AreEqual(user.Name, found!.Name);
+            Assert.That(found!.Name, Is.EqualTo(user.Name));
         }
 
         [Test]

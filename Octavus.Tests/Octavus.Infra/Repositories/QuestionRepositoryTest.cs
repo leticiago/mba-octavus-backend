@@ -73,9 +73,9 @@ namespace Octavus.Tests.Repositories
             var result = await _repository.GetByIdAsync(question.Id);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(question.Id, result!.Id);
+            Assert.That(result!.Id, Is.EqualTo(question.Id));
             Assert.IsNotNull(result.Answers);
-            Assert.AreEqual(question.Answers.Count, result.Answers.Count);
+            Assert.That(result.Answers.Count, Is.EqualTo(question.Answers.Count));
         }
 
         [Test]

@@ -31,11 +31,11 @@ namespace Octavus.Tests.Mappings
             var entity = context.Model.FindEntityType(typeof(Profile));
 
             Assert.IsNotNull(entity);
-            Assert.AreEqual("Profiles", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("Profiles"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.Single().Name);
+            Assert.That(key.Properties.Single().Name, Is.EqualTo("Id"));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Octavus.Tests.Mappings
 
             Assert.IsNotNull(nameProperty);
             Assert.IsFalse(nameProperty.IsNullable);
-            Assert.AreEqual(100, nameProperty.GetMaxLength());
+            Assert.That(nameProperty.GetMaxLength(), Is.EqualTo(100));
         }
     }
 }

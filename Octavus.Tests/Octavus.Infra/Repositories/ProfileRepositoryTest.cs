@@ -57,7 +57,7 @@ namespace Octavus.Tests.Repositories
 
             var found = await _repository.GetByIdAsync(profile.Id);
             Assert.IsNotNull(found);
-            Assert.AreEqual(profile.Name, found!.Name);
+            Assert.That(found!.Name, Is.EqualTo(profile.Name));
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Octavus.Tests.Repositories
             await _repository.UpdateAsync(profile);
 
             var updated = await _repository.GetByIdAsync(profile.Id);
-            Assert.AreEqual("Perfil Atualizado", updated!.Name);
+            Assert.That(updated!.Name, Is.EqualTo("Perfil Atualizado"));
         }
 
         [Test]

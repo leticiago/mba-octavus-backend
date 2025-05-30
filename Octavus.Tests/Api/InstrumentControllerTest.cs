@@ -40,8 +40,8 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result.Result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(instruments, okResult.Value);
+            Assert.That(okResult.StatusCode, Is.EqualTo(200));
+            Assert.That(okResult.Value, Is.EqualTo(instruments));
         }
 
         [Test]
@@ -58,8 +58,8 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result.Result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(instrument, okResult.Value);
+            Assert.That(okResult.StatusCode, Is.EqualTo(200));
+            Assert.That(okResult.Value, Is.EqualTo(instrument));
         }
 
         [Test]
@@ -90,8 +90,8 @@ namespace Octavus.Tests.Controllers
             // Assert
             var createdAtResult = result.Result as CreatedAtActionResult;
             Assert.IsNotNull(createdAtResult);
-            Assert.AreEqual(201, createdAtResult.StatusCode);
-            Assert.AreEqual(created, createdAtResult.Value);
+            Assert.That(createdAtResult.StatusCode, Is.EqualTo(201));
+            Assert.That(createdAtResult.Value, Is.EqualTo(created));
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var badRequest = result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.AreEqual(400, badRequest.StatusCode);
+            Assert.That(badRequest.StatusCode, Is.EqualTo(400));
         }
 
         [Test]

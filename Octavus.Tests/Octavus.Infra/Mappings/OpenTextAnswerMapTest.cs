@@ -31,11 +31,11 @@ namespace Octavus.Tests.Mappings
             using var context = new TestDbContext();
             var entity = context.Model.FindEntityType(typeof(OpenTextAnswer));
             Assert.IsNotNull(entity);
-            Assert.AreEqual("OpenTextAnswers", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("OpenTextAnswers"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.First().Name);
+            Assert.That(key.Properties.First().Name, Is.EqualTo("Id"));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Octavus.Tests.Mappings
 
             Assert.That(props.ContainsKey("ResponseText"));
             Assert.IsTrue(props["ResponseText"].IsNullable == false);
-            Assert.AreEqual(2000, props["ResponseText"].GetMaxLength());
+            Assert.That(props["ResponseText"].GetMaxLength(), Is.EqualTo(2000));
 
             Assert.That(props.ContainsKey("SubmittedAt"));
             Assert.IsTrue(props["SubmittedAt"].IsNullable == false);
@@ -67,11 +67,11 @@ namespace Octavus.Tests.Mappings
 
             var fkQuestion = entity.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType.ClrType == typeof(Question));
             Assert.IsNotNull(fkQuestion);
-            Assert.AreEqual("QuestionId", fkQuestion.Properties.First().Name);
+            Assert.That(fkQuestion.Properties.First().Name, Is.EqualTo("QuestionId"));
 
             var fkUser = entity.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType.ClrType == typeof(User));
             Assert.IsNotNull(fkUser);
-            Assert.AreEqual("StudentId", fkUser.Properties.First().Name);
+            Assert.That(fkUser.Properties.First().Name, Is.EqualTo("StudentId"));
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Octavus.Tests.Mappings
             using var context = new TestDbContext();
             var entity = context.Model.FindEntityType(typeof(ProfessorStudent));
             Assert.IsNotNull(entity);
-            Assert.AreEqual("ProfessorStudents", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("ProfessorStudents"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
@@ -50,7 +50,7 @@ namespace Octavus.Tests.Mappings
 
             Assert.That(props.ContainsKey("ProfessorId"));
             Assert.IsFalse(props["ProfessorId"].IsNullable);
-            Assert.AreEqual(100, props["ProfessorId"].GetMaxLength());
+            Assert.That(props["ProfessorId"].GetMaxLength(), Is.EqualTo(100));
 
             Assert.That(props.ContainsKey("Date"));
             Assert.IsFalse(props["Date"].IsNullable);
@@ -70,8 +70,8 @@ namespace Octavus.Tests.Mappings
 
             var fk = entity.GetForeignKeys().FirstOrDefault(f => f.Properties.Any(p => p.Name == "StudentId"));
             Assert.IsNotNull(fk);
-            Assert.AreEqual(typeof(User), fk.PrincipalEntityType.ClrType);
-            Assert.AreEqual("StudentId", fk.Properties.First().Name);
+            Assert.That(fk.PrincipalEntityType.ClrType, Is.EqualTo(typeof(User)));
+            Assert.That(fk.Properties.First().Name, Is.EqualTo("StudentId"));
         }
     }
 }

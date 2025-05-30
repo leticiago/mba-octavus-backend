@@ -31,11 +31,11 @@ namespace Octavus.Tests.Mappings
 
             Assert.IsNotNull(entity, "Entity mapping not found");
 
-            Assert.AreEqual("Instruments", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("Instruments"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.First().Name);
+            Assert.That(key.Properties.First().Name, Is.EqualTo("Id"));
 
             var props = entity.GetProperties().Select(p => p.Name).ToList();
             CollectionAssert.Contains(props, "Name");

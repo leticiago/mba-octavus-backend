@@ -48,8 +48,8 @@ namespace Octavus.Tests.Controllers
             // Assert
             var createdResult = result as CreatedAtActionResult;
             Assert.IsNotNull(createdResult);
-            Assert.AreEqual(nameof(_controller.GetById), createdResult.ActionName);
-            Assert.AreEqual(createdUser.Id, ((UserDto)createdResult.Value).Id);
+            Assert.That(createdResult.ActionName, Is.EqualTo(nameof(_controller.GetById)));
+            Assert.That(((UserDto)createdResult.Value).Id, Is.EqualTo(createdUser.Id));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(users, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(users));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(user, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(user));
         }
 
         [Test]

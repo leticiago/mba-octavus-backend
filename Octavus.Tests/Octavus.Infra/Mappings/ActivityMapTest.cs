@@ -33,7 +33,7 @@ namespace Octavus.Tests.Mappings
             Assert.IsNotNull(entity, "Entity mapping not found");
 
             var tableName = entity.GetTableName();
-            Assert.AreEqual("Activities", tableName);
+            Assert.That(tableName, Is.EqualTo("Activities"));
 
             var props = entity.GetProperties().Select(p => p.Name).ToList();
             CollectionAssert.Contains(props, "Id");
@@ -55,12 +55,12 @@ namespace Octavus.Tests.Mappings
 
             var instrumentNav = entity.GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType.ClrType.Name == "Instrument");
             Assert.IsNotNull(instrumentNav);
-            Assert.AreEqual(DeleteBehavior.Restrict, instrumentNav.DeleteBehavior);
+            Assert.That(instrumentNav.DeleteBehavior, Is.EqualTo(DeleteBehavior.Restrict));
 
             var questionNav = context.Model.FindEntityType(typeof(Question))?
                 .GetForeignKeys().FirstOrDefault(fk => fk.PrincipalEntityType.ClrType == typeof(Activity));
             Assert.IsNotNull(questionNav);
-            Assert.AreEqual(DeleteBehavior.Cascade, questionNav.DeleteBehavior);
+            Assert.That(questionNav.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
     }
 }

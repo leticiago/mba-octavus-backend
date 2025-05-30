@@ -43,7 +43,7 @@ namespace Octavus.Tests.Services
             var result = await _service.GetByIdAsync(id);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedAnswer.Id, result!.Id);
+            Assert.That(result!.Id, Is.EqualTo(expectedAnswer.Id));
             _mockOpenTextAnswerRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
         }
 
@@ -85,7 +85,7 @@ namespace Octavus.Tests.Services
             var result = await _service.CreateAsync(answer);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(answer.Id, result.Id);
+            Assert.That(result.Id, Is.EqualTo(answer.Id));
 
             _mockOpenTextAnswerRepository.Verify(r => r.AddAsync(answer), Times.Once);
             _mockOpenTextAnswerRepository.Verify(r => r.SaveChangesAsync(), Times.Once);

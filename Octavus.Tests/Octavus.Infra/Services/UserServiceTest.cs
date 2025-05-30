@@ -44,9 +44,9 @@ namespace Octavus.Tests.Services
 
             var result = await _service.CreateAsync(dto);
 
-            Assert.AreEqual(dto.Email, result.Email);
-            Assert.AreEqual(dto.Name, result.Name);
-            Assert.AreEqual(dto.Username, result.Username);
+            Assert.That(result.Email, Is.EqualTo(dto.Email));
+            Assert.That(result.Name, Is.EqualTo(dto.Name));
+            Assert.That(result.Username, Is.EqualTo(dto.Username));
 
             _userRepoMock.Verify(r => r.AddAsync(It.IsAny<User>()), Times.Once);
             _userRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
@@ -106,7 +106,7 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetAllAsync();
 
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetByIdAsync(id);
 
-            Assert.AreEqual(user.Id, result.Id);
+            Assert.That(result.Id, Is.EqualTo(user.Id));
         }
 
         [Test]
@@ -159,7 +159,7 @@ namespace Octavus.Tests.Services
         public async Task DeleteAsync_ShouldDeleteUser_WhenFound()
         {
             var id = Guid.NewGuid();
-            var user = new User { Id = id, Password = "Password" , Username = "USERNAME", Email="email@teste.com", Name ="Name"};
+            var user = new User { Id = id, Password = "Password", Username = "USERNAME", Email = "email@teste.com", Name = "Name" };
 
             _userRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(user);
 

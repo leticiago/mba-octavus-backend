@@ -32,11 +32,11 @@ namespace Octavus.Tests.Mappings
 
             Assert.IsNotNull(entity, "Entity mapping not found");
 
-            Assert.AreEqual("DragAndDropActivities", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("DragAndDropActivities"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.First().Name);
+            Assert.That(key.Properties.First().Name, Is.EqualTo("Id"));
 
             var props = entity.GetProperties().Select(p => p.Name).ToList();
             CollectionAssert.Contains(props, "ActivityId");
@@ -51,8 +51,8 @@ namespace Octavus.Tests.Mappings
 
             var fk = entity.GetForeignKeys().FirstOrDefault(f => f.PrincipalEntityType.ClrType == typeof(Activity));
             Assert.IsNotNull(fk, "Foreign key to Activity not found");
-            Assert.AreEqual("ActivityId", fk.Properties.First().Name);
-            Assert.AreEqual(DeleteBehavior.Cascade, fk.DeleteBehavior);
+            Assert.That(fk.Properties.First().Name, Is.EqualTo("ActivityId"));
+            Assert.That(fk.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
     }
 }

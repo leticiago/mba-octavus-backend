@@ -31,11 +31,11 @@ namespace Octavus.Tests.Mappings
             var entity = context.Model.FindEntityType(typeof(Answer));
 
             Assert.IsNotNull(entity, "Entity mapping not found");
-            Assert.AreEqual("Answers", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("Answers"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.First().Name);
+            Assert.That(key.Properties.First().Name, Is.EqualTo("Id"));
 
             var props = entity.GetProperties().Select(p => p.Name).ToList();
             CollectionAssert.Contains(props, "Text");
@@ -51,8 +51,8 @@ namespace Octavus.Tests.Mappings
 
             var fk = entity.GetForeignKeys().FirstOrDefault(f => f.PrincipalEntityType.ClrType == typeof(Question));
             Assert.IsNotNull(fk);
-            Assert.AreEqual("QuestionId", fk.Properties.First().Name);
-            Assert.AreEqual(DeleteBehavior.Cascade, fk.DeleteBehavior);
+            Assert.That(fk.Properties.First().Name, Is.EqualTo("QuestionId"));
+            Assert.That(fk.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual("Usuário criado com sucesso.", okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo("Usuário criado com sucesso."));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Octavus.Tests.Controllers
 
             var badRequest = result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.AreEqual("Erro ao criar o usuário.", badRequest.Value);
+            Assert.That(badRequest.Value, Is.EqualTo("Erro ao criar o usuário."));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Octavus.Tests.Controllers
 
             var response = JsonSerializer.Serialize(okResult.Value);
             Assert.IsNotNull(response);
-            Assert.AreEqual("{\"token\":\"fake-jwt-token\"}", response);
+            Assert.That(response, Is.EqualTo("{\"token\":\"fake-jwt-token\"}"));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Octavus.Tests.Controllers
 
             var unauthorized = result as UnauthorizedObjectResult;
             Assert.IsNotNull(unauthorized);
-            Assert.AreEqual("Credenciais inválidas.", unauthorized.Value);
+            Assert.That(unauthorized.Value, Is.EqualTo("Credenciais inválidas."));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace Octavus.Tests.Controllers
 
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual("Logout realizado com sucesso.", okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo("Logout realizado com sucesso."));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Octavus.Tests.Controllers
 
             var badRequest = result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.AreEqual("Token não fornecido.", badRequest.Value);
+            Assert.That(badRequest.Value, Is.EqualTo("Token não fornecido."));
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Octavus.Tests.Controllers
 
             var badRequest = result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.AreEqual("Erro ao efetuar logout.", badRequest.Value);
+            Assert.That(badRequest.Value, Is.EqualTo("Erro ao efetuar logout."));
         }
     }
 }

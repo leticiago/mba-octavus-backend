@@ -56,7 +56,7 @@ namespace Octavus.Tests.Repositories
 
             var found = await _repository.GetByIdAsync(answer.Id);
             Assert.IsNotNull(found);
-            Assert.AreEqual(answer.ResponseText, found!.ResponseText);
+            Assert.That(found!.ResponseText, Is.EqualTo(answer.ResponseText));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Octavus.Tests.Repositories
             await _repository.UpdateAsync(answer);
 
             var updated = await _repository.GetByIdAsync(answer.Id);
-            Assert.AreEqual("Texto atualizado", updated!.ResponseText);
+            Assert.That(updated!.ResponseText, Is.EqualTo("Texto atualizado"));
         }
 
         [Test]

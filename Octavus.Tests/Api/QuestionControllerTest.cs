@@ -36,7 +36,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var statusResult = result as StatusCodeResult;
             Assert.IsNotNull(statusResult);
-            Assert.AreEqual(201, statusResult.StatusCode);
+            Assert.That(statusResult.StatusCode, Is.EqualTo(201));
             _questionServiceMock.Verify(s => s.AddQuestionsBatchAsync(dto), Times.Once);
         }
 
@@ -53,7 +53,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result.Result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(questions, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(questions));
         }
 
         [Test]
@@ -77,8 +77,8 @@ namespace Octavus.Tests.Controllers
 
             var actualList = okResult.Value as List<QuestionDto>;
             Assert.IsNotNull(actualList);
-            Assert.AreEqual(1, actualList.Count);
-            Assert.AreEqual(expectedQuestion, actualList[0]);
+            Assert.That(actualList.Count, Is.EqualTo(1));
+            Assert.That(actualList[0], Is.EqualTo(expectedQuestion));
         }
 
 

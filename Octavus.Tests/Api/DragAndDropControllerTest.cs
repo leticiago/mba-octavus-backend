@@ -37,9 +37,9 @@ namespace Octavus.Tests.Controllers
             // Assert
             var createdAtResult = result as CreatedAtActionResult;
             Assert.IsNotNull(createdAtResult);
-            Assert.AreEqual(nameof(DragAndDropController.GetById), createdAtResult.ActionName);
-            Assert.AreEqual(dto.ActivityId, createdAtResult.RouteValues["id"]);
-            Assert.AreEqual(createdResult, createdAtResult.Value);
+            Assert.That(createdAtResult.ActionName, Is.EqualTo(nameof(DragAndDropController.GetById)));
+            Assert.That(createdAtResult.RouteValues["id"], Is.EqualTo(dto.ActivityId));
+            Assert.That(createdAtResult.Value, Is.EqualTo(createdResult));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(list, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(list));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(activity, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(activity));
         }
     }
 }

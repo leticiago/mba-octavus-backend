@@ -40,7 +40,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(expectedActivities, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(expectedActivities));
         }
 
         [Test]
@@ -74,8 +74,8 @@ namespace Octavus.Tests.Controllers
             var messageValue = messageProp.GetValue(value) as string;
             var scoreValue = (int)scoreProp.GetValue(value);
 
-            Assert.AreEqual("Respostas enviadas e avaliadas com sucesso.", messageValue);
-            Assert.AreEqual(expectedScore, scoreValue);
+            Assert.That(messageValue, Is.EqualTo("Respostas enviadas e avaliadas com sucesso."));
+            Assert.That(scoreValue, Is.EqualTo(expectedScore));
         }
 
 
@@ -94,7 +94,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(completedActivities, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(completedActivities));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Octavus.Tests.Controllers
         {
             // Arrange
             var dto = new DragAndDropSubmissionDto { StudentId = Guid.NewGuid(), ActivityId = Guid.NewGuid(), Answer = "A;B;C" };
-            var evaluationResult = new ActivityScoreResultDto() { Score = 10};
+            var evaluationResult = new ActivityScoreResultDto() { Score = 10 };
             _studentServiceMock.Setup(s => s.GradeDragAndDropAsync(dto)).Returns(Task.FromResult(evaluationResult));
 
             // Act
@@ -111,7 +111,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(evaluationResult, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(evaluationResult));
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(metrics, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(metrics));
         }
     }
 }

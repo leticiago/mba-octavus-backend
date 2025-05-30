@@ -65,8 +65,8 @@ namespace Octavus.Tests.Repositories
             var result = _repository.GetBond(professorStudent.StudentId, professorStudent.ProfessorId);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(professorStudent.StudentId, result!.StudentId);
-            Assert.AreEqual(professorStudent.ProfessorId, result.ProfessorId);
+            Assert.That(result!.StudentId, Is.EqualTo(professorStudent.StudentId));
+            Assert.That(result.ProfessorId, Is.EqualTo(professorStudent.ProfessorId));
         }
 
         [Test]
@@ -85,9 +85,9 @@ namespace Octavus.Tests.Repositories
 
             Assert.IsNotNull(students);
             Assert.That(students.Count, Is.EqualTo(1));
-            Assert.AreEqual("Aluno Y", students[0].Name);
-            Assert.AreEqual("Piano", students[0].Instrument);
-            Assert.AreEqual("aluno.y@example.com", students[0].Email);
+            Assert.That(students[0].Name, Is.EqualTo("Aluno Y"));
+            Assert.That(students[0].Instrument, Is.EqualTo("Piano"));
+            Assert.That(students[0].Email, Is.EqualTo("aluno.y@example.com"));
         }
 
         [Test]

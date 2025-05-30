@@ -92,8 +92,8 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetMetricsByStudentAsync(studentId);
 
-            Assert.AreEqual(0, result.TotalActivitiesDone);
-            Assert.AreEqual(0, result.AverageScore);
+            Assert.That(result.TotalActivitiesDone, Is.EqualTo(0));
+            Assert.That(result.AverageScore, Is.EqualTo(0));
             Assert.IsEmpty(result.AverageScoreByActivityType);
         }
 
@@ -106,7 +106,7 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetPendingReviewsAsync(professorId);
 
-            Assert.AreEqual(1, result.Count);
+            Assert.That(result.Count, Is.EqualTo(1));
         }
     }
 }

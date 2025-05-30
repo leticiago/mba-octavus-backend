@@ -39,7 +39,7 @@ namespace Octavus.Tests.Services
                 q.Title == dto.Title &&
                 q.ActivityId == dto.ActivityId)), Times.Once);
 
-            Assert.AreEqual(dto.Title, result.Title);
+            Assert.That(result.Title, Is.EqualTo(dto.Title));
         }
 
         [Test]
@@ -63,9 +63,9 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetAllAsync();
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Pergunta 1", result[0].Title);
-            Assert.AreEqual(2, result[0].Answers.Count);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].Title, Is.EqualTo("Pergunta 1"));
+            Assert.That(result[0].Answers.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Octavus.Tests.Services
             var result = await _service.GetByIdAsync(id);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result!.Count);
+            Assert.That(result!.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace Octavus.Tests.Services
             _mockRepo.Setup(r => r.GetByActivityIdAsync(id)).ReturnsAsync((List<Question>?)null);
 
             var ex = Assert.ThrowsAsync<Exception>(async () => await _service.GetByIdAsync(id));
-            Assert.AreEqual("Atividade não encontrada.", ex!.Message);
+            Assert.That(ex!.Message, Is.EqualTo("Atividade não encontrada."));
         }
 
         [Test]
@@ -129,8 +129,8 @@ namespace Octavus.Tests.Services
 
             await _service.UpdateAsync(id, dto);
 
-            Assert.AreEqual("Novo título", existing.Title);
-            Assert.AreEqual(2, existing.Answers.Count);
+            Assert.That(existing.Title, Is.EqualTo("Novo título"));
+            Assert.That(existing.Answers.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Octavus.Tests.Services
             };
 
             var ex = Assert.ThrowsAsync<Exception>(async () => await _service.UpdateAsync(id, dto));
-            Assert.AreEqual("Pergunta não encontrada.", ex!.Message);
+            Assert.That(ex!.Message, Is.EqualTo("Pergunta não encontrada."));
         }
 
         [Test]

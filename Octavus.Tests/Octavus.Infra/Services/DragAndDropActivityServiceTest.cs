@@ -34,9 +34,9 @@ namespace Octavus.Tests.Services
 
             var result = await _service.CreateAsync(activityId, sequence);
 
-            Assert.AreEqual(sequence, result.OriginalSequence);
-            Assert.AreEqual(4, result.ShuffledOptions.Count);
-            Assert.AreNotEqual(sequence, string.Join(";", result.ShuffledOptions));
+            Assert.That(result.OriginalSequence, Is.EqualTo(sequence));
+            Assert.That(result.ShuffledOptions.Count, Is.EqualTo(4));
+            Assert.That(string.Join(";", result.ShuffledOptions), Is.Not.EqualTo(sequence));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetAllAsync();
 
-            Assert.AreEqual(2, result.Count);
+            Assert.That(result.Count, Is.EqualTo(2));
             Assert.IsTrue(result.All(r => r.ShuffledOptions.Count > 1));
         }
 
@@ -64,8 +64,8 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetByIdAsync(id);
 
-            Assert.AreEqual("1;2;3", result.OriginalSequence);
-            Assert.AreEqual(3, result.ShuffledOptions.Count);
+            Assert.That(result.OriginalSequence, Is.EqualTo("1;2;3"));
+            Assert.That(result.ShuffledOptions.Count, Is.EqualTo(3));
         }
 
         [Test]

@@ -46,8 +46,8 @@ namespace Octavus.Tests.Repositories
             var result = await _repository.GetByActivityIdAsync(activityId);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(activityId, result.ActivityId);
-            Assert.AreEqual(entity.Text, result.Text);
+            Assert.That(result.ActivityId, Is.EqualTo(activityId));
+            Assert.That(result.Text, Is.EqualTo(entity.Text));
         }
 
         [Test]

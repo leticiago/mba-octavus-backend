@@ -65,7 +65,7 @@ namespace Octavus.Tests.Services
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("abc123token", result);
+            Assert.That(result, Is.EqualTo("abc123token"));
         }
 
         [Test]

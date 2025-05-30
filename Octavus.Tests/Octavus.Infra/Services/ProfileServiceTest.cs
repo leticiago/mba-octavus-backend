@@ -44,7 +44,7 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetAllAsync();
 
-            Assert.AreEqual(2, result.Count());
+            Assert.That(result.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace Octavus.Tests.Services
             var result = await _service.GetByIdAsync(id);
 
             Assert.NotNull(result);
-            Assert.AreEqual("Admin", result!.Name);
+            Assert.That(result!.Name, Is.EqualTo("Admin"));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Octavus.Tests.Services
 
             _mockProfileRepository.Verify(r => r.AddAsync(profile), Times.Once);
             _mockProfileRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
-            Assert.AreEqual(profile, result);
+            Assert.That(result, Is.EqualTo(profile));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Octavus.Tests.Services
             var result = await _service.UpdateAsync(profile);
 
             Assert.IsTrue(result);
-            Assert.AreEqual("Novo Nome", existing.Name);
+            Assert.That(existing.Name, Is.EqualTo("Novo Nome"));
         }
 
         [Test]

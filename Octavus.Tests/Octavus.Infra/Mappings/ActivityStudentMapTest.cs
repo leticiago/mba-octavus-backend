@@ -31,7 +31,7 @@ namespace Octavus.Tests.Mappings
 
             Assert.IsNotNull(entity, "Entity mapping not found");
 
-            Assert.AreEqual("ActivityStudents", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("ActivityStudents"));
 
             var keyProps = entity.FindPrimaryKey()?.Properties.Select(p => p.Name).ToList();
             CollectionAssert.AreEquivalent(new[] { "StudentId", "ActivityId" }, keyProps);
@@ -49,12 +49,12 @@ namespace Octavus.Tests.Mappings
 
             var fkUser = entity.GetForeignKeys().FirstOrDefault(fk => fk.Properties.Any(p => p.Name == "StudentId"));
             Assert.IsNotNull(fkUser);
-            Assert.AreEqual(typeof(User), fkUser.PrincipalEntityType.ClrType);
+            Assert.That(fkUser.PrincipalEntityType.ClrType, Is.EqualTo(typeof(User)));
 
             var fkActivity = entity.GetForeignKeys().FirstOrDefault(fk => fk.Properties.Any(p => p.Name == "ActivityId"));
             Assert.IsNotNull(fkActivity);
-            Assert.AreEqual(typeof(Activity), fkActivity.PrincipalEntityType.ClrType);
-            Assert.AreEqual(DeleteBehavior.Cascade, fkActivity.DeleteBehavior);
+            Assert.That(fkActivity.PrincipalEntityType.ClrType, Is.EqualTo(typeof(Activity)));
+            Assert.That(fkActivity.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
     }
 }

@@ -96,12 +96,12 @@ namespace Octavus.Tests.Repositories
         [Test]
         public async Task AddAsync_ShouldAddActivity()
         {
-            var activity = new Activity {Id = Guid.NewGuid(), ProfessorId = Guid.NewGuid(), IsPublic = true, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString() };
+            var activity = new Activity { Id = Guid.NewGuid(), ProfessorId = Guid.NewGuid(), IsPublic = true, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString() };
             await _repository.AddAsync(activity);
 
             var saved = await _repository.GetByIdAsync(activity.Id);
             Assert.IsNotNull(saved);
-            Assert.AreEqual(activity.Id, saved!.Id);
+            Assert.That(saved!.Id, Is.EqualTo(activity.Id));
         }
     }
 }

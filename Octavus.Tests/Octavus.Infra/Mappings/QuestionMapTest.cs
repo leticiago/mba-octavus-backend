@@ -34,11 +34,11 @@ namespace Octavus.Tests.Mappings
 
             var entity = context.Model.FindEntityType(typeof(Question));
             Assert.IsNotNull(entity);
-            Assert.AreEqual("Questions", entity.GetTableName());
+            Assert.That(entity.GetTableName(), Is.EqualTo("Questions"));
 
             var key = entity.FindPrimaryKey();
             Assert.IsNotNull(key);
-            Assert.AreEqual("Id", key.Properties.Single().Name);
+            Assert.That(key.Properties.Single().Name, Is.EqualTo("Id"));
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Octavus.Tests.Mappings
 
             Assert.IsNotNull(titleProperty);
             Assert.IsFalse(titleProperty.IsNullable);
-            Assert.AreEqual(200, titleProperty.GetMaxLength());
+            Assert.That(titleProperty.GetMaxLength(), Is.EqualTo(200));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Octavus.Tests.Mappings
 
             var fk = entity.GetForeignKeys().SingleOrDefault(f => f.Properties.Any(p => p.Name == "ActivityId"));
             Assert.IsNotNull(fk);
-            Assert.AreEqual(DeleteBehavior.Cascade, fk.DeleteBehavior);
+            Assert.That(fk.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace Octavus.Tests.Mappings
             var entity = context.Model.FindEntityType(typeof(Question));
             var answersFk = entity.GetReferencingForeignKeys().SingleOrDefault(fk => fk.PrincipalEntityType.ClrType == typeof(Question));
             Assert.IsNotNull(answersFk);
-            Assert.AreEqual(DeleteBehavior.Cascade, answersFk.DeleteBehavior);
+            Assert.That(answersFk.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
     }
 }

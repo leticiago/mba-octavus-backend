@@ -67,9 +67,9 @@ namespace Octavus.Tests.Services
 
             var score = await _service.SubmitAnswersAsync(dto);
 
-            Assert.AreEqual(100, score);
+            Assert.That(score, Is.EqualTo(100));
             Assert.IsTrue(activityStudent.IsCorrected);
-            Assert.AreEqual(ActivityStatus.Done, activityStudent.Status);
+            Assert.That(activityStudent.Status, Is.EqualTo(ActivityStatus.Done));
 
             _activityStudentRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
@@ -115,8 +115,8 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetStudentCompletedActivitiesAsync(studentId);
 
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(85, result[0].Score);
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].Score, Is.EqualTo(85));
         }
 
         [Test]
@@ -147,9 +147,9 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GradeDragAndDropAsync(dto);
 
-            Assert.AreEqual(100, result.Score);
-            Assert.AreEqual(3, result.Total);
-            Assert.AreEqual(3, result.Correct);
+            Assert.That(result.Score, Is.EqualTo(100));
+            Assert.That(result.Total, Is.EqualTo(3));
+            Assert.That(result.Correct, Is.EqualTo(3));
             Assert.IsTrue(activityStudent.IsCorrected);
 
             _activityStudentRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
@@ -183,8 +183,8 @@ namespace Octavus.Tests.Services
             await _service.GradeDragAndDropAsync(dto);
 
             Assert.IsNotNull(createdStudent);
-            Assert.AreEqual(dto.ActivityId, createdStudent.ActivityId);
-            Assert.AreEqual(dto.StudentId, createdStudent.StudentId);
+            Assert.That(createdStudent.ActivityId, Is.EqualTo(dto.ActivityId));
+            Assert.That(createdStudent.StudentId, Is.EqualTo(dto.StudentId));
 
             _activityStudentRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
         }

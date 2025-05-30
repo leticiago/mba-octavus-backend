@@ -47,7 +47,7 @@ namespace Octavus.Tests.Controllers
 
             // Serializa o resultado para verificar diretamente o JSON
             var json = System.Text.Json.JsonSerializer.Serialize(okResult.Value);
-            Assert.AreEqual("{\"message\":\"Aluno vinculado com sucesso!\"}", json);
+            Assert.That(json, Is.EqualTo("{\"message\":\"Aluno vinculado com sucesso!\"}"));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Octavus.Tests.Controllers
             Assert.IsNotNull(messageProp, "Propriedade 'message' não encontrada no resultado.");
 
             var messageValue = messageProp.GetValue(okResult.Value) as string;
-            Assert.AreEqual("Vínculo atualizado com sucesso!", messageValue);
+            Assert.That(messageValue, Is.EqualTo("Vínculo atualizado com sucesso!"));
         }
 
 
@@ -88,7 +88,7 @@ namespace Octavus.Tests.Controllers
             var professorId = Guid.NewGuid();
             var aluno1 = new StudentDto() { Name = "Aluno 1" };
             var aluno2 = new StudentDto() { Name = "Aluno 2" };
-            var expected = new List<StudentDto> { aluno1, aluno2};
+            var expected = new List<StudentDto> { aluno1, aluno2 };
             _professorStudentServiceMock.Setup(s => s.GetStudentsByProfessorAsync(professorId)).Returns(Task.FromResult(expected));
 
             // Act
@@ -97,7 +97,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(expected, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(expected));
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual("Atividade atribuída com sucesso.", okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo("Atividade atribuída com sucesso."));
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual("Atividade avaliada com sucesso.", okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo("Atividade avaliada com sucesso."));
         }
 
         [Test]
@@ -138,7 +138,7 @@ namespace Octavus.Tests.Controllers
             // Arrange
             var professorId = Guid.NewGuid();
             var pendingreview = new PendingActivityReviewDto() { ActivityName = "Atividade teste" };
-            var pendingReviews = new List<PendingActivityReviewDto> {pendingreview };
+            var pendingReviews = new List<PendingActivityReviewDto> { pendingreview };
             _activityStudentServiceMock.Setup(s => s.GetPendingReviewsAsync(professorId)).ReturnsAsync(pendingReviews);
 
             // Act
@@ -147,7 +147,7 @@ namespace Octavus.Tests.Controllers
             // Assert
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
-            Assert.AreEqual(pendingReviews, okResult.Value);
+            Assert.That(okResult.Value, Is.EqualTo(pendingReviews));
         }
     }
 }

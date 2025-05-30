@@ -34,8 +34,8 @@ namespace Octavus.Tests.Services
 
             var result = await _service.GetAllAsync();
 
-            Assert.AreEqual(2, ((List<Instrument>)result).Count);
-            Assert.AreEqual("Guitar", ((List<Instrument>)result)[0].Name);
+            Assert.That(((List<Instrument>)result).Count, Is.EqualTo(2));
+            Assert.That(((List<Instrument>)result)[0].Name, Is.EqualTo("Guitar"));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Octavus.Tests.Services
             var result = await _service.GetByIdAsync(id);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("Violin", result.Name);
+            Assert.That(result.Name, Is.EqualTo("Violin"));
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace Octavus.Tests.Services
 
             var result = await _service.CreateAsync(instrument);
 
-            Assert.AreEqual(instrument.Id, result.Id);
-            Assert.AreEqual("Flute", result.Name);
+            Assert.That(result.Id, Is.EqualTo(instrument.Id));
+            Assert.That(result.Name, Is.EqualTo("Flute"));
             _mockRepo.Verify(r => r.AddAsync(instrument), Times.Once);
             _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
@@ -102,7 +102,7 @@ namespace Octavus.Tests.Services
             var result = await _service.UpdateAsync(instrument);
 
             Assert.IsTrue(result);
-            Assert.AreEqual("Drums", existing.Name);
+            Assert.That(existing.Name, Is.EqualTo("Drums"));
             _mockRepo.Verify(r => r.UpdateAsync(existing), Times.Once);
             _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
         }

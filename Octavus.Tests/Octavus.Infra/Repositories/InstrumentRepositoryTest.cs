@@ -56,7 +56,7 @@ namespace Octavus.Tests.Repositories
 
             var found = await _repository.GetByIdAsync(instrument.Id);
             Assert.IsNotNull(found);
-            Assert.AreEqual(instrument.Name, found!.Name);
+            Assert.That(found!.Name, Is.EqualTo(instrument.Name));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace Octavus.Tests.Repositories
             await _repository.UpdateAsync(instrument);
 
             var updated = await _repository.GetByIdAsync(instrument.Id);
-            Assert.AreEqual("Electric Violin", updated!.Name);
+            Assert.That(updated!.Name, Is.EqualTo("Electric Violin"));
         }
 
         [Test]
