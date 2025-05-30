@@ -40,7 +40,7 @@ jobs:
     - name: 📊 Gerar relatório de cobertura
       run: >
         reportgenerator
-        -reports:**/TestResults/coverage.cobertura.xml
+        -reports:**/Octavus.Test/coverage.xml
         -targetdir:coveragereport
         -reporttypes:TextSummary
 
