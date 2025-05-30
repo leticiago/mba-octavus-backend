@@ -26,7 +26,13 @@ jobs:
       run: dotnet format --verify-no-changes
       continue-on-error: false
 
-    - name: 🧪 Rodar testes com Coverlet (standalone)
+    - name: ⬇️ Instalar Coverlet.Console
+      run: dotnet tool install --global coverlet.console
+
+    - name: Configurar PATH para ferramentas .NET
+      run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+    - name: 🧪 Rodar testes com Coverlet
       run: |
         dotnet build
         coverlet ./Octavus.Tests/bin/Debug/net8.0/Octavus.Tests.dll \
