@@ -14,7 +14,7 @@ namespace Octavus.App.Api.Controllers.v1
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService _profileService;
-     
+
         public ProfileController(IProfileService profileService)
         {
             _profileService = profileService;

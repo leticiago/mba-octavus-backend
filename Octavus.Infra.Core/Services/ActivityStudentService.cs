@@ -51,7 +51,7 @@ namespace Octavus.Infra.Core.Services
 
             activityStudent.Score = dto.Score;
             activityStudent.Comment = dto.Comment;
-            activityStudent.IsCorrected = true; 
+            activityStudent.IsCorrected = true;
             activityStudent.CorrectionDate = DateTime.Now;
 
             await _repository.UpdateAsync(activityStudent);

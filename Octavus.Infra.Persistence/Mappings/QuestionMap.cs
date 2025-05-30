@@ -16,7 +16,7 @@ namespace Octavus.Infra.Persistence.Mappings
                 .IsRequired()
                 .HasMaxLength(200);
 
-           
+
             builder.Property(q => q.ActivityId)
                 .IsRequired();
 

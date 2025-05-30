@@ -14,7 +14,7 @@ namespace Octavus.App.Api.Controllers.v1
     public class InstrumentController : ControllerBase
     {
         private readonly IInstrumentService _instrumentService;
-   
+
         public InstrumentController(IInstrumentService instrumentService)
         {
             _instrumentService = instrumentService;
@@ -47,7 +47,7 @@ namespace Octavus.App.Api.Controllers.v1
                 Name = instrument.Name,
             };
             var created = await _instrumentService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id },created);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]

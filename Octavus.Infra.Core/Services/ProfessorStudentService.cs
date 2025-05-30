@@ -25,9 +25,9 @@ namespace Octavus.Infra.Core.Services
 
         public async Task LinkByEmailAsync(LinkStudentByEmailDto dto)
         {
-            var student = new User() { Name = "", Email = "", Password ="", Username = ""};
+            var student = new User() { Name = "", Email = "", Password = "", Username = "" };
 
-            if(dto.StudentEmail != null)
+            if (dto.StudentEmail != null)
             {
                 student = await _userRepository.GetByEmailAsync(dto.StudentEmail);
                 if (student == null)
@@ -41,7 +41,7 @@ namespace Octavus.Infra.Core.Services
             var entity = new ProfessorStudent
             {
                 Id = Guid.NewGuid(),
-                StudentId = student.Id ,
+                StudentId = student.Id,
                 ProfessorId = dto.ProfessorId,
                 InstrumentId = dto.InstrumentId,
                 Date = DateTime.UtcNow,
@@ -79,7 +79,7 @@ namespace Octavus.Infra.Core.Services
                 Id = s.Id,
                 Name = s.Name,
                 Email = s.Email,
-                Instrument = s.Instrument 
+                Instrument = s.Instrument
             }).ToList();
         }
     }

@@ -22,7 +22,8 @@ namespace Octavus.Infra.Core.Services
 
         public async Task<ActivityDto> CreateAsync(CreateActivityDto dto)
         {
-            var entity = new Activity(){
+            var entity = new Activity()
+            {
                 Id = Guid.NewGuid(),
                 Date = dto.Date,
                 Description = dto.Description,
@@ -39,11 +40,11 @@ namespace Octavus.Infra.Core.Services
             return new ActivityDto()
             {
                 Type = dto.Type,
-                IsPublic = dto.IsPublic,  
-                ProfessorId= dto.ProfessorId,
+                IsPublic = dto.IsPublic,
+                ProfessorId = dto.ProfessorId,
                 Name = dto.Name,
                 Level = dto.Level,
-                InstrumentId= dto.InstrumentId,
+                InstrumentId = dto.InstrumentId,
                 Description = dto.Description,
                 Date = dto.Date,
                 Id = entity.Id
@@ -82,10 +83,10 @@ namespace Octavus.Infra.Core.Services
                 InstrumentId = entity.InstrumentId,
                 IsPublic = entity.IsPublic,
                 Type = ActivityTypeExtensions.FromString(entity.Type),
-                ProfessorId= entity.ProfessorId,
-                Date= entity.Date,
+                ProfessorId = entity.ProfessorId,
+                Date = entity.Date,
                 Id = entity.Id,
-                Level= ActivityLevelExtensions.FromString(entity.Level),
+                Level = ActivityLevelExtensions.FromString(entity.Level),
                 Name = entity.Name,
             };
         }
@@ -118,14 +119,14 @@ namespace Octavus.Infra.Core.Services
             var existing = await _repository.GetByIdAsync(id);
             if (existing == null)
                 throw new Exception("Atividade não encontrada");
-            
+
             existing.Id = id;
             existing.Date = dto.Date;
             existing.Description = dto.Description;
             existing.InstrumentId = dto.InstrumentId;
             existing.Level = dto.Level.ToString();
             existing.Name = dto.Name;
-            
+
             await _repository.UpdateAsync(existing);
         }
 

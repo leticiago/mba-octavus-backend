@@ -17,9 +17,9 @@ namespace Octavus.Infra.Persistence.Repositories
 
         public async Task<List<Answer>> GetCorrectAnswersAsync(IEnumerable<Guid> questionIds)
         {
-           return await _context.Set<Answer>()
-                .Where(a => questionIds.Contains(a.QuestionId) && a.IsCorrect)
-                .ToListAsync();
+            return await _context.Set<Answer>()
+                 .Where(a => questionIds.Contains(a.QuestionId) && a.IsCorrect)
+                 .ToListAsync();
         }
     }
 }

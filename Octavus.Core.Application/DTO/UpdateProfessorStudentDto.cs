@@ -10,7 +10,7 @@ namespace Octavus.Core.Application.DTO
     {
         public Guid StudentId { get; set; }
         public Guid ProfessorId { get; set; }
-        public bool? Active { get; set; } 
-        public Guid InstrumentId { get; set; } 
+        public bool? Active { get; set; }
+        public Guid InstrumentId { get; set; }
     }
 }

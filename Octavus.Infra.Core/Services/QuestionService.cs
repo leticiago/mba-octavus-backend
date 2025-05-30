@@ -35,9 +35,9 @@ namespace Octavus.Infra.Core.Services
 
         public async Task<List<QuestionDto>?> GetByIdAsync(Guid id)
         {
-            var response = new List<QuestionDto>(); 
+            var response = new List<QuestionDto>();
             var questions = await _questionRepository.GetByActivityIdAsync(id) ?? throw new Exception("Atividade não encontrada.");
-            
+
             foreach (var question in questions)
             {
                 response.Add(MapToDto(question));
@@ -75,7 +75,7 @@ namespace Octavus.Infra.Core.Services
                 Id = question.Id,
                 Title = question.Title,
                 Answers = question.Answers
-                    .OrderBy(a => rng.Next()) 
+                    .OrderBy(a => rng.Next())
                     .Select(a => new AnswerDto
                     {
                         Id = a.Id,

@@ -9,7 +9,7 @@ namespace Octavus.Infra.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           
+
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ProfessorStudents",
                 table: "ProfessorStudents");

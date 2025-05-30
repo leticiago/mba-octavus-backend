@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Octavus.Infra.Core.Services
 {
-    public class StudentService: IStudentService
+    public class StudentService : IStudentService
     {
         private readonly IAnswerRepository _answerRepository;
         private readonly IActivityStudentRepository _activityStudentRepository;

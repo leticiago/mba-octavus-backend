@@ -23,7 +23,7 @@ namespace Octavus.Core.Application.DTO
     {
         public Guid ActivityId { get; set; }
         public Guid StudentId { get; set; }
-        public string Answer { get; set; } 
+        public string Answer { get; set; }
     }
 
     public class ActivityScoreResultDto

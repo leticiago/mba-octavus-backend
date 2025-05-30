@@ -59,8 +59,8 @@ public class Startup
                 };
             });
 
-         services.AddHttpClient<KeycloakService>();
-         services.Configure<KeycloakOptions>(keycloakConfig);
+        services.AddHttpClient<KeycloakService>();
+        services.Configure<KeycloakOptions>(keycloakConfig);
         services.AddControllers();
 
         services.AddScoped<IKeycloakService, KeycloakService>();
@@ -74,10 +74,10 @@ public class Startup
         services.AddScoped<IOpenTextAnswerService, OpenTextAnswerService>();
         services.AddScoped<IActivityStudentService, ActivityStudentService>();
         services.AddScoped<IStudentService, StudentService>();
-        
 
 
-        
+
+
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
         services.AddScoped<IInstrumentRepository, InstrumentRepository>();
