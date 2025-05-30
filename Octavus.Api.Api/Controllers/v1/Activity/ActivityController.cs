@@ -8,70 +8,73 @@ using System.Xml;
 using Octavus.Core.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 
-[ApiController]
-[Route("api/[controller]")]
-public class ActivityController : ControllerBase
+namespace Octavus.App.Api.Controllers.v1
 {
-    private readonly IActivityService _activityService;
-
-    public ActivityController(IActivityService activityService)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ActivityController : ControllerBase
     {
-        _activityService = activityService;
-    }
+        private readonly IActivityService _activityService;
 
-    [HttpPost]
-    [Authorize(Roles ="Professor, Colaborador")]
-    public async Task<IActionResult> Create([FromBody] CreateActivityDto dto)
-    {
-        var result = await _activityService.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
-    }
+        public ActivityController(IActivityService activityService)
+        {
+            _activityService = activityService;
+        }
 
-    [HttpGet]
-    [Authorize(Roles = "Professor")]
-    public async Task<IActionResult> GetAll()
-    {
-        var result = await _activityService.GetAllAsync();
-        return Ok(result);
-    }
+        [HttpPost]
+        [Authorize(Roles = "Professor, Colaborador")]
+        public async Task<IActionResult> Create([FromBody] CreateActivityDto dto)
+        {
+            var result = await _activityService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
 
-    [HttpGet("{id}")]
-    [Authorize(Roles = "Professor, Colaborador, Aluno")]
-    public async Task<IActionResult> GetById(Guid id)
-    {
-        var result = await _activityService.GetByIdAsync(id);
-        return Ok(result);
-    }
+        [HttpGet]
+        [Authorize(Roles = "Professor")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _activityService.GetAllAsync();
+            return Ok(result);
+        }
 
-    [HttpGet("professor/{professorId}")]
-    [Authorize(Roles = "Professor")]
-    public async Task<IActionResult> GetByProfessor(Guid professorId)
-    {
-        var result = await _activityService.GetByProfessorIdAsync(professorId);
-        return Ok(result);
-    }
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _activityService.GetByIdAsync(id);
+            return Ok(result);
+        }
 
-    [HttpPut("{id}")]
-    [Authorize(Roles = "Professor, Colaborador")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] CreateActivityDto dto)
-    {
-        await _activityService.UpdateAsync(id, dto);
-        return NoContent();
-    }
+        [HttpGet("professor/{professorId}")]
+        [Authorize(Roles = "Professor")]
+        public async Task<IActionResult> GetByProfessor(Guid professorId)
+        {
+            var result = await _activityService.GetByProfessorIdAsync(professorId);
+            return Ok(result);
+        }
 
-    [HttpDelete("{id}")]
-    [Authorize(Roles = "Professor, Colaborador")]
-    public async Task<IActionResult> Delete(Guid id)
-    {
-        await _activityService.DeleteAsync(id);
-        return NoContent();
-    }
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Professor, Colaborador")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] CreateActivityDto dto)
+        {
+            await _activityService.UpdateAsync(id, dto);
+            return NoContent();
+        }
 
-    [HttpGet("public")]
-    [Authorize(Roles = "Professor, Colaborador, Aluno")]
-    public async Task<IActionResult> GetPublic()
-    {
-        var result = await _activityService.GetPublicActivitiesAsync();
-        return Ok(result);
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Professor, Colaborador")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _activityService.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [HttpGet("public")]
+        [Authorize(Roles = "Professor, Colaborador, Aluno")]
+        public async Task<IActionResult> GetPublic()
+        {
+            var result = await _activityService.GetPublicActivitiesAsync();
+            return Ok(result);
+        }
     }
 }

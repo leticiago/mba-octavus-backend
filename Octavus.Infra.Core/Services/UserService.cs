@@ -132,7 +132,7 @@ namespace Octavus.Infra.Core.Services
                 RegexOptions.IgnoreCase);
 
             if (!isValidEmail)
-                throw new ArgumentException("E-mail inválido.");
+                throw new ArgumentException("e-mail inválido.");
         }
 
         private void ValidatePassword(string password)

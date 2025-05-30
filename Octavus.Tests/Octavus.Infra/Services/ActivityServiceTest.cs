@@ -62,7 +62,7 @@ namespace Octavus.Tests.Services
                     Level = "Beginner",
                     ProfessorId = Guid.NewGuid(),
                     IsPublic = true,
-                    Type = "Question"
+                    Type = ActivityType.QuestionAndAnswer.ToString(),
                 }
             };
 
@@ -88,7 +88,7 @@ namespace Octavus.Tests.Services
                 Level = "Beginner",
                 ProfessorId = Guid.NewGuid(),
                 IsPublic = false,
-                Type = "Question"
+                Type = ActivityType.QuestionAndAnswer.ToString(),
             };
 
             _repositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
@@ -115,7 +115,7 @@ namespace Octavus.Tests.Services
                     Level = "Beginner",
                     ProfessorId = professorId,
                     IsPublic = true,
-                    Type = "Question"
+                    Type = ActivityType.QuestionAndAnswer.ToString(),
                 }
             };
 

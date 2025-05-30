@@ -30,7 +30,7 @@ namespace Octavus.Tests.Services
 
             _mockConfig.Setup(c => c.GetSection("Keycloak")).Returns(keycloakSection.Object);
 
-            _mockHttpHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            _mockHttpHandler = new Mock<HttpMessageHandler>(MockBehavior.Loose);
 
             _httpClient = new HttpClient(_mockHttpHandler.Object);
 

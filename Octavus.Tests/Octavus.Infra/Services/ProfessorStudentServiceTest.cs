@@ -150,7 +150,7 @@ namespace Octavus.Tests.Services
             var students = new List<StudentDto>
             {
                 new StudentDto { Id = Guid.NewGuid(), Name = "Aluno 1", Email = "a1@email.com" },
-                new StudentDto {Id = Guid.NewGuid(), Name = "Aluno 2", Email = "a2@email.com"}
+                new StudentDto {Id = Guid.NewGuid(), Name = "Aluno 2", Email = "a2@email.com", Instrument = "Piano"}
             };
 
             _mockProfessorStudentRepository

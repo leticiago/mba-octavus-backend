@@ -7,132 +7,136 @@ using System.Collections.Generic;
 using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Services;
 using Octavus.Core.Domain.Entities;
+using Octavus.App.Api.Controllers.v1;
 
-[TestFixture]
-public class ActivityControllerTests
+namespace Octavus.Tests.Controllers
 {
-    private Mock<IActivityService> _activityServiceMock;
-    private ActivityController _controller;
-
-    [SetUp]
-    public void Setup()
+    [TestFixture]
+    public class ActivityControllerTests
     {
-        _activityServiceMock = new Mock<IActivityService>();
-        _controller = new ActivityController(_activityServiceMock.Object);
-    }
+        private Mock<IActivityService> _activityServiceMock;
+        private ActivityController _controller;
 
-    [Test]
-    public async Task Create_ReturnsCreatedAtAction_WithCreatedActivity()
-    {
-        // Arrange
-        var dto = new CreateActivityDto();
-        var createdActivity = new ActivityDto { Id = Guid.NewGuid() };
-        _activityServiceMock.Setup(s => s.CreateAsync(dto)).Returns(Task.FromResult(createdActivity));
+        [SetUp]
+        public void Setup()
+        {
+            _activityServiceMock = new Mock<IActivityService>();
+            _controller = new ActivityController(_activityServiceMock.Object);
+        }
 
-        // Act
-        var result = await _controller.Create(dto);
+        [Test]
+        public async Task Create_ReturnsCreatedAtAction_WithCreatedActivity()
+        {
+            // Arrange
+            var dto = new CreateActivityDto();
+            var createdActivity = new ActivityDto { Id = Guid.NewGuid() };
+            _activityServiceMock.Setup(s => s.CreateAsync(dto)).Returns(Task.FromResult(createdActivity));
 
-        // Assert
-        var createdResult = result as CreatedAtActionResult;
-        Assert.IsNotNull(createdResult);
-        Assert.AreEqual(nameof(ActivityController.GetById), createdResult.ActionName);
-        Assert.AreEqual(createdActivity.Id, createdResult.RouteValues["id"]);
-        Assert.AreEqual(createdActivity, createdResult.Value);
-    }
+            // Act
+            var result = await _controller.Create(dto);
 
-    [Test]
-    public async Task GetAll_ReturnsOk_WithListOfActivities()
-    {
-        // Arrange
-        var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
-        _activityServiceMock.Setup(s => s.GetAllAsync()).Returns(Task.FromResult(activities.AsEnumerable()));
+            // Assert
+            var createdResult = result as CreatedAtActionResult;
+            Assert.IsNotNull(createdResult);
+            Assert.AreEqual(nameof(ActivityController.GetById), createdResult.ActionName);
+            Assert.AreEqual(createdActivity.Id, createdResult.RouteValues["id"]);
+            Assert.AreEqual(createdActivity, createdResult.Value);
+        }
 
-        // Act
-        var result = await _controller.GetAll();
+        [Test]
+        public async Task GetAll_ReturnsOk_WithListOfActivities()
+        {
+            // Arrange
+            var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
+            _activityServiceMock.Setup(s => s.GetAllAsync()).Returns(Task.FromResult(activities.AsEnumerable()));
 
-        // Assert
-        var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.AreEqual(activities, okResult.Value);
-    }
+            // Act
+            var result = await _controller.GetAll();
 
-    [Test]
-    public async Task GetById_ReturnsOk_WithActivity()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var activity = new ActivityDto { Id = id };
-        _activityServiceMock.Setup(s => s.GetByIdAsync(id)).Returns(Task.FromResult(activity));
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(activities, okResult.Value);
+        }
 
-        // Act
-        var result = await _controller.GetById(id);
+        [Test]
+        public async Task GetById_ReturnsOk_WithActivity()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var activity = new ActivityDto { Id = id };
+            _activityServiceMock.Setup(s => s.GetByIdAsync(id)).Returns(Task.FromResult(activity));
 
-        // Assert
-        var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.AreEqual(activity, okResult.Value);
-    }
+            // Act
+            var result = await _controller.GetById(id);
 
-    [Test]
-    public async Task GetByProfessor_ReturnsOk_WithListOfActivities()
-    {
-        // Arrange
-        var professorId = Guid.NewGuid();
-        var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
-        _activityServiceMock.Setup(s => s.GetByProfessorIdAsync(professorId)).Returns(Task.FromResult(activities.AsEnumerable()));
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(activity, okResult.Value);
+        }
 
-        // Act
-        var result = await _controller.GetByProfessor(professorId);
+        [Test]
+        public async Task GetByProfessor_ReturnsOk_WithListOfActivities()
+        {
+            // Arrange
+            var professorId = Guid.NewGuid();
+            var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
+            _activityServiceMock.Setup(s => s.GetByProfessorIdAsync(professorId)).Returns(Task.FromResult(activities.AsEnumerable()));
 
-        // Assert
-        var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.AreEqual(activities, okResult.Value);
-    }
+            // Act
+            var result = await _controller.GetByProfessor(professorId);
 
-    [Test]
-    public async Task Update_ReturnsNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var dto = new CreateActivityDto();
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(activities, okResult.Value);
+        }
 
-        _activityServiceMock.Setup(s => s.UpdateAsync(id, dto)).Returns(Task.CompletedTask);
+        [Test]
+        public async Task Update_ReturnsNoContent()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var dto = new CreateActivityDto();
 
-        // Act
-        var result = await _controller.Update(id, dto);
+            _activityServiceMock.Setup(s => s.UpdateAsync(id, dto)).Returns(Task.CompletedTask);
 
-        // Assert
-        Assert.IsInstanceOf<NoContentResult>(result);
-    }
+            // Act
+            var result = await _controller.Update(id, dto);
 
-    [Test]
-    public async Task Delete_ReturnsNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        _activityServiceMock.Setup(s => s.DeleteAsync(id)).Returns(Task.CompletedTask);
+            // Assert
+            Assert.IsInstanceOf<NoContentResult>(result);
+        }
 
-        // Act
-        var result = await _controller.Delete(id);
+        [Test]
+        public async Task Delete_ReturnsNoContent()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _activityServiceMock.Setup(s => s.DeleteAsync(id)).Returns(Task.CompletedTask);
 
-        // Assert
-        Assert.IsInstanceOf<NoContentResult>(result);
-    }
+            // Act
+            var result = await _controller.Delete(id);
 
-    [Test]
-    public async Task GetPublic_ReturnsOk_WithListOfPublicActivities()
-    {
-        // Arrange
-        var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
-        _activityServiceMock.Setup(s => s.GetPublicActivitiesAsync()).Returns(Task.FromResult(activities));
+            // Assert
+            Assert.IsInstanceOf<NoContentResult>(result);
+        }
 
-        // Act
-        var result = await _controller.GetPublic();
+        [Test]
+        public async Task GetPublic_ReturnsOk_WithListOfPublicActivities()
+        {
+            // Arrange
+            var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
+            _activityServiceMock.Setup(s => s.GetPublicActivitiesAsync()).Returns(Task.FromResult(activities));
 
-        // Assert
-        var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.AreEqual(activities, okResult.Value);
+            // Act
+            var result = await _controller.GetPublic();
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(activities, okResult.Value);
+        }
     }
 }

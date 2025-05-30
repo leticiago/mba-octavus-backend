@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Octavus.App.Api.Controllers.v1.Activity
+namespace Octavus.App.Api.Controllers.v1
 {
     [ApiController]
     [Route("api/[controller]")]

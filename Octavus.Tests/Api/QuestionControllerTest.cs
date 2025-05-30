@@ -4,110 +4,113 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Octavus.App.Api.Controllers.v1.Activity;
+using Octavus.App.Api.Controllers.v1;
 using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Services;
 
-[TestFixture]
-public class QuestionControllerTests
+namespace Octavus.Tests.Controllers
 {
-    private Mock<IQuestionService> _questionServiceMock;
-    private QuestionController _controller;
-
-    [SetUp]
-    public void Setup()
+    [TestFixture]
+    public class QuestionControllerTests
     {
-        _questionServiceMock = new Mock<IQuestionService>();
-        _controller = new QuestionController(_questionServiceMock.Object);
-    }
+        private Mock<IQuestionService> _questionServiceMock;
+        private QuestionController _controller;
 
-    [Test]
-    public async Task CreateBatch_ReturnsStatus201()
-    {
-        // Arrange
-        var dto = new CreateQuestionBatchDto();
-        _questionServiceMock.Setup(s => s.AddQuestionsBatchAsync(dto)).Returns(Task.CompletedTask);
+        [SetUp]
+        public void Setup()
+        {
+            _questionServiceMock = new Mock<IQuestionService>();
+            _controller = new QuestionController(_questionServiceMock.Object);
+        }
 
-        // Act
-        var result = await _controller.CreateBatch(dto);
+        [Test]
+        public async Task CreateBatch_ReturnsStatus201()
+        {
+            // Arrange
+            var dto = new CreateQuestionBatchDto();
+            _questionServiceMock.Setup(s => s.AddQuestionsBatchAsync(dto)).Returns(Task.CompletedTask);
 
-        // Assert
-        var statusResult = result as StatusCodeResult;
-        Assert.IsNotNull(statusResult);
-        Assert.AreEqual(201, statusResult.StatusCode);
-        _questionServiceMock.Verify(s => s.AddQuestionsBatchAsync(dto), Times.Once);
-    }
+            // Act
+            var result = await _controller.CreateBatch(dto);
 
-    [Test]
-    public async Task GetAll_ReturnsOkWithList()
-    {
-        // Arrange
-        var questions = new List<QuestionDto> { new QuestionDto(), new QuestionDto() };
-        _questionServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(questions);
+            // Assert
+            var statusResult = result as StatusCodeResult;
+            Assert.IsNotNull(statusResult);
+            Assert.AreEqual(201, statusResult.StatusCode);
+            _questionServiceMock.Verify(s => s.AddQuestionsBatchAsync(dto), Times.Once);
+        }
 
-        // Act
-        var result = await _controller.GetAll();
+        [Test]
+        public async Task GetAll_ReturnsOkWithList()
+        {
+            // Arrange
+            var questions = new List<QuestionDto> { new QuestionDto(), new QuestionDto() };
+            _questionServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(questions);
 
-        // Assert
-        var okResult = result.Result as OkObjectResult;
-        Assert.IsNotNull(okResult);
-        Assert.AreEqual(questions, okResult.Value);
-    }
+            // Act
+            var result = await _controller.GetAll();
 
-    [Test]
-    public async Task GetByActivity_ReturnsOkWithResult()
-    {
-        // Arrange
-        var activityId = Guid.NewGuid();
-        var expectedQuestion = new QuestionDto();
-        var expectedList = new List<QuestionDto> { expectedQuestion };
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(questions, okResult.Value);
+        }
 
-        _questionServiceMock
-            .Setup(s => s.GetByIdAsync(activityId))
-            .ReturnsAsync(expectedList);
+        [Test]
+        public async Task GetByActivity_ReturnsOkWithResult()
+        {
+            // Arrange
+            var activityId = Guid.NewGuid();
+            var expectedQuestion = new QuestionDto();
+            var expectedList = new List<QuestionDto> { expectedQuestion };
 
-        // Act
-        var result = await _controller.GetByActivity(activityId);
+            _questionServiceMock
+                .Setup(s => s.GetByIdAsync(activityId))
+                .ReturnsAsync(expectedList);
 
-        // Assert
-        var okResult = result as OkObjectResult;
-        Assert.IsNotNull(okResult);
+            // Act
+            var result = await _controller.GetByActivity(activityId);
 
-        var actualList = okResult.Value as List<QuestionDto>;
-        Assert.IsNotNull(actualList);
-        Assert.AreEqual(1, actualList.Count);
-        Assert.AreEqual(expectedQuestion, actualList[0]);
-    }
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+
+            var actualList = okResult.Value as List<QuestionDto>;
+            Assert.IsNotNull(actualList);
+            Assert.AreEqual(1, actualList.Count);
+            Assert.AreEqual(expectedQuestion, actualList[0]);
+        }
 
 
-    [Test]
-    public async Task Update_ReturnsNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        var dto = new CreateQuestionDto();
-        _questionServiceMock.Setup(s => s.UpdateAsync(id, dto)).Returns(Task.CompletedTask);
+        [Test]
+        public async Task Update_ReturnsNoContent()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var dto = new CreateQuestionDto();
+            _questionServiceMock.Setup(s => s.UpdateAsync(id, dto)).Returns(Task.CompletedTask);
 
-        // Act
-        var result = await _controller.Update(id, dto);
+            // Act
+            var result = await _controller.Update(id, dto);
 
-        // Assert
-        Assert.IsInstanceOf<NoContentResult>(result);
-        _questionServiceMock.Verify(s => s.UpdateAsync(id, dto), Times.Once);
-    }
+            // Assert
+            Assert.IsInstanceOf<NoContentResult>(result);
+            _questionServiceMock.Verify(s => s.UpdateAsync(id, dto), Times.Once);
+        }
 
-    [Test]
-    public async Task Delete_ReturnsNoContent()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        _questionServiceMock.Setup(s => s.DeleteAsync(id)).Returns(Task.CompletedTask);
+        [Test]
+        public async Task Delete_ReturnsNoContent()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            _questionServiceMock.Setup(s => s.DeleteAsync(id)).Returns(Task.CompletedTask);
 
-        // Act
-        var result = await _controller.Delete(id);
+            // Act
+            var result = await _controller.Delete(id);
 
-        // Assert
-        Assert.IsInstanceOf<NoContentResult>(result);
-        _questionServiceMock.Verify(s => s.DeleteAsync(id), Times.Once);
+            // Assert
+            Assert.IsInstanceOf<NoContentResult>(result);
+            _questionServiceMock.Verify(s => s.DeleteAsync(id), Times.Once);
+        }
     }
 }
