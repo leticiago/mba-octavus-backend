@@ -26,23 +26,24 @@ jobs:
       run: dotnet format --verify-no-changes
       continue-on-error: false
 
-    - name: 🧪 Rodar testes com cobertura
-      run: >
-        dotnet test --no-restore --verbosity normal
-        /p:CollectCoverage=true
-        /p:CoverletOutputFormat=cobertura
-        /p:CoverletOutput=TestResults/
-        /p:ExcludeByFile="**/Migrations/*"
+    - name: 🧪 Rodar testes com Coverlet (standalone)
+      run: |
+        dotnet build
+        coverlet ./Octavus.Tests/bin/Debug/net8.0/Octavus.Tests.dll \
+          --target "dotnet" \
+          --targetargs "test --no-build --no-restore --verbosity normal" \
+          --format cobertura \
+          --output ./Octavus.Tests/coverage.xml
 
     - name: ⬇️ Instalar ReportGenerator
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
     - name: 📊 Gerar relatório de cobertura
-      run: >
-        reportgenerator
-        -reports:**/Octavus.Tests/coverage.xml
-        -targetdir:coveragereport
-        -reporttypes:TextSummary
+      run: |
+        reportgenerator \
+          -reports:Octavus.Tests/coverage.xml \
+          -targetdir:coveragereport \
+          -reporttypes:TextSummary
 
     - name: ✅ Verificar cobertura mínima de 70%
       run: |
