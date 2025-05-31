@@ -62,5 +62,52 @@ namespace Octavus.Tests.Mappings
             Assert.IsNotNull(questionNav);
             Assert.That(questionNav.DeleteBehavior, Is.EqualTo(DeleteBehavior.Cascade));
         }
+
+        [Test]
+        public void ActivityMap_Properties_HaveCorrectConstraints()
+        {
+            using var context = new TestDbContext();
+            var entity = context.Model.FindEntityType(typeof(Activity));
+            Assert.IsNotNull(entity);
+
+            // Id - required (não aceita nulo)
+            var idProp = entity.FindProperty("Id");
+            Assert.IsNotNull(idProp);
+            Assert.IsFalse(idProp.IsNullable);
+
+            // Name - required e max length 100
+            var nameProp = entity.FindProperty("Name");
+            Assert.IsNotNull(nameProp);
+            Assert.IsFalse(nameProp.IsNullable);
+            Assert.That(nameProp.GetMaxLength(), Is.EqualTo(100));
+
+            // Description - required e max length 500
+            var descProp = entity.FindProperty("Description");
+            Assert.IsNotNull(descProp);
+            Assert.IsFalse(descProp.IsNullable);
+            Assert.That(descProp.GetMaxLength(), Is.EqualTo(500));
+
+            // Type - required e max length 50
+            var typeProp = entity.FindProperty("Type");
+            Assert.IsNotNull(typeProp);
+            Assert.IsFalse(typeProp.IsNullable);
+            Assert.That(typeProp.GetMaxLength(), Is.EqualTo(50));
+
+            // Date - required
+            var dateProp = entity.FindProperty("Date");
+            Assert.IsNotNull(dateProp);
+            Assert.IsFalse(dateProp.IsNullable);
+
+            // Level - required e max length 50
+            var levelProp = entity.FindProperty("Level");
+            Assert.IsNotNull(levelProp);
+            Assert.IsFalse(levelProp.IsNullable);
+            Assert.That(levelProp.GetMaxLength(), Is.EqualTo(50));
+
+            // IsPublic - required
+            var isPublicProp = entity.FindProperty("IsPublic");
+            Assert.IsNotNull(isPublicProp);
+
+        }
     }
 }
