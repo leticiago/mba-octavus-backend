@@ -206,7 +206,7 @@ namespace Octavus.Tests.Services
                 StudentId = studentId,
                 ProfessorId = professorId,
                 InstrumentId = Guid.NewGuid(),
-                Active = null  // Active não informado
+                Active = null
             };
 
             _mockProfessorStudentRepository
@@ -219,7 +219,7 @@ namespace Octavus.Tests.Services
 
             await _service.UpdateLinkAsync(dto);
 
-            // O Active não deve ser alterado
+
             Assert.IsTrue(link.Active);
 
             _mockProfessorStudentRepository.Verify(r => r.UpdateAsync(link), Times.Once);

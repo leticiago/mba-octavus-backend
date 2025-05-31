@@ -98,7 +98,6 @@ namespace Octavus.Tests.Repositories
             var studentId = Guid.NewGuid();
             var activityId = Guid.NewGuid();
 
-            // Criar dados para professor-student link ativo
             var professorStudent = new ProfessorStudent
             {
                 Id = Guid.NewGuid(),

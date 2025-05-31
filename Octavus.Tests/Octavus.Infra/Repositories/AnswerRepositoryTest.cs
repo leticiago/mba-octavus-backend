@@ -54,7 +54,7 @@ namespace Octavus.Tests.Repositories
             var result = await _repository.GetCorrectAnswersAsync(questionIdsToTest);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(3)); // 1 correct for questionId1 + 2 correct for questionId2
+            Assert.That(result.Count, Is.EqualTo(3));
 
             Assert.IsTrue(result.All(a => a.IsCorrect));
             Assert.IsTrue(result.All(a => questionIdsToTest.Contains(a.QuestionId)));

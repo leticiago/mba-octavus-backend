@@ -46,7 +46,6 @@ namespace Octavus.Tests.Controllers
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
 
-            // Serializa o resultado para verificar diretamente o JSON
             var json = System.Text.Json.JsonSerializer.Serialize(okResult.Value);
             Assert.That(json, Is.EqualTo("{\"message\":\"Aluno vinculado com sucesso!\"}"));
         }
@@ -72,7 +71,6 @@ namespace Octavus.Tests.Controllers
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
 
-            // Usa reflexão para obter o valor da propriedade message
             var messageProp = okResult.Value?.GetType().GetProperty("message");
             Assert.IsNotNull(messageProp, "Propriedade 'message' não encontrada no resultado.");
 

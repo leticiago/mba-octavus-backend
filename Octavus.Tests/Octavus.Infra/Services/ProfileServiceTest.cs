@@ -26,7 +26,7 @@ namespace Octavus.Tests.Services
         [TearDown]
         public void Teardown()
         {
-            // Nada a ser descartado por enquanto.
+
         }
 
         [Test]

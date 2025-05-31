@@ -204,36 +204,61 @@ namespace Octavus.Tests.Services
         [Test]
         public async Task AssignRolesToUserAsync_ReturnsTrue_WhenAllRolesAssigned()
         {
-            var userId = "user123";
-            var roles = new[] { "role1", "role2" };
+            var userId = "user-id-123";
+            var roles = new List<string> { "role1", "role2" };
+            var token = "valid-token";
 
-            foreach (var role in roles)
-            {
-                // Mock GET role
-                var roleJson = $"{{\"id\":\"role-id-{role}\",\"name\":\"{role}\",\"composite\":false,\"clientRole\":false,\"containerId\":\"realm\"}}";
-                var getRoleResponse = new HttpResponseMessage(HttpStatusCode.OK)
+
+            _mockHttpHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Get &&
+                        req.RequestUri!.ToString().Contains($"/roles/{roles[0]}")),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(roleJson)
-                };
-                _mockHttpHandler.Protected()
-                    .SetupSequence<Task<HttpResponseMessage>>("SendAsync",
-                        ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri!.ToString().Contains($"/roles/{role}")),
-                        ItExpr.IsAny<CancellationToken>())
-                    .ReturnsAsync(getRoleResponse);
+                    Content = new StringContent(@"{
+                ""id"": ""role1-id"",
+                ""name"": ""role1"",
+                ""composite"": false,
+                ""clientRole"": false,
+                ""containerId"": ""container1""
+            }")
+                });
 
-                // Mock POST assign role
-                var assignResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
-                _mockHttpHandler.Protected()
-                    .SetupSequence<Task<HttpResponseMessage>>("SendAsync",
-                        ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Post && req.RequestUri!.ToString().Contains($"/users/{userId}/role-mappings/realm")),
-                        ItExpr.IsAny<CancellationToken>())
-                    .ReturnsAsync(assignResponse);
-            }
+            _mockHttpHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Get &&
+                        req.RequestUri!.ToString().Contains($"/roles/{roles[1]}")),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(@"{
+                ""id"": ""role2-id"",
+                ""name"": ""role2"",
+                ""composite"": false,
+                ""clientRole"": false,
+                ""containerId"": ""container2""
+            }")
+                });
 
-            var result = await _service.AssignRolesToUserAsync(userId, roles, "token");
+            _mockHttpHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Post &&
+                        req.RequestUri!.ToString().Contains($"/users/{userId}/role-mappings/realm")),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NoContent));
+
+            var result = await _service.AssignRolesToUserAsync(userId, roles, token);
 
             Assert.IsTrue(result);
         }
+
 
         [Test]
         public async Task GetAdminAccessTokenAsync_ReturnsToken_WhenSuccess()
@@ -250,7 +275,6 @@ namespace Octavus.Tests.Services
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(response);
 
-            // Chamando método privado via reflexão para teste (ou alterar para internal + InternalsVisibleTo)
             var method = typeof(KeycloakService).GetMethod("GetAdminAccessTokenAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var task = (Task<string?>)method!.Invoke(_service, null)!;
             var token = await task;

@@ -107,7 +107,7 @@ namespace Octavus.Tests.Repositories
             var instrument = new Instrument { Id = Guid.NewGuid(), Name = "Flute" };
             await _repository.AddAsync(instrument);
 
-            // Atualiza sem alterar propriedades
+
             await _repository.UpdateAsync(instrument);
 
             var fetched = await _repository.GetByIdAsync(instrument.Id);
@@ -118,7 +118,7 @@ namespace Octavus.Tests.Repositories
         public async Task DeleteAsync_ShouldNotThrow_WhenEntityNotFound()
         {
             var randomId = Guid.NewGuid();
-            // O ideal é que não lance exceção ou tenha comportamento definido
+
             Assert.DoesNotThrowAsync(async () => await _repository.DeleteAsync(randomId));
         }
 

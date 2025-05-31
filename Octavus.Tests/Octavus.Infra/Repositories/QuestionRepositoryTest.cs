@@ -144,7 +144,7 @@ namespace Octavus.Tests.Repositories
         [Test]
         public async Task GetAllAsync_ShouldReturnEmpty_WhenNoQuestions()
         {
-            // Limpa a base antes do teste
+
             foreach (var q in _context.Set<Question>())
             {
                 _context.Set<Question>().Remove(q);

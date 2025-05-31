@@ -122,7 +122,7 @@ namespace Octavus.Tests.Repositories
         {
             var professorStudent = _context.Set<ProfessorStudent>().First();
 
-            // Passa professorId de um e studentId de outro que não estão vinculados
+
             var unrelatedStudentId = Guid.NewGuid();
             var unrelatedProfessorId = Guid.NewGuid();
 
