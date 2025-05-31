@@ -102,7 +102,7 @@ namespace Octavus.Tests.Services
             var result = await _service.CreateAsync(Guid.NewGuid(), "A;B;C");
 
             Assert.IsNotNull(capturedEntity);
-            Assert.AreNotEqual(Guid.Empty, capturedEntity.Id);
+            Assert.That(capturedEntity.Id, Is.Not.EqualTo(Guid.Empty));
         }
 
         [Test]
@@ -120,12 +120,12 @@ namespace Octavus.Tests.Services
         {
             // Empty sequence
             var resultEmpty = await _service.CreateAsync(Guid.NewGuid(), "");
-            Assert.AreEqual(new List<string>(), resultEmpty.ShuffledOptions);
+            Assert.That(resultEmpty.ShuffledOptions, Is.EqualTo(new List<string>()));
 
             // Single item
             var resultSingle = await _service.CreateAsync(Guid.NewGuid(), "A");
-            Assert.AreEqual(1, resultSingle.ShuffledOptions.Count);
-            Assert.AreEqual("A", resultSingle.ShuffledOptions[0]);
+            Assert.That(resultSingle.ShuffledOptions.Count, Is.EqualTo(1));
+            Assert.That(resultSingle.ShuffledOptions[0], Is.EqualTo("A"));
         }
     }
 }

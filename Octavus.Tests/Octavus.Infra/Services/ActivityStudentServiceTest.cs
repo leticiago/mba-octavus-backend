@@ -185,7 +185,7 @@ namespace Octavus.Tests.Services
 
             Assert.That(result.AverageScore, Is.EqualTo(8));
 
-            Assert.That(result.AverageScoreByActivityType[ActivityType.QuestionAndAnswer.ToString()], Is.EqualTo(7)); 
+            Assert.That(result.AverageScoreByActivityType[ActivityType.QuestionAndAnswer.ToString()], Is.EqualTo(7));
             Assert.That(result.AverageScoreByActivityType[ActivityType.OpenText.ToString()], Is.EqualTo(10));
         }
 

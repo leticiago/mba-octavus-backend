@@ -178,7 +178,7 @@ namespace Octavus.Tests.Controllers
         [Test]
         public async Task LinkStudent_InvalidModel_ReturnsBadRequest()
         {
-            
+
             var dto = new LinkStudentByEmailDto();
 
             var result = await _controller.LinkStudent(dto);

@@ -26,7 +26,7 @@ namespace Octavus.Tests.Services
             keycloakSection.Setup(s => s["resource"]).Returns("client-id");
             keycloakSection.Setup(s => s["realm"]).Returns("realm-name");
             keycloakSection.Setup(s => s["credentials:secret"]).Returns("secret");
-        
+
             keycloakSection.Setup(s => s["auth-server-url"]).Returns("https://keycloak.test");
 
             _mockConfig.Setup(c => c.GetSection("Keycloak")).Returns(keycloakSection.Object);
@@ -55,7 +55,7 @@ namespace Octavus.Tests.Services
                 LastName = "User",
                 Email = "test@example.com",
                 Enabled = true,
-                Credentials = new List<KeycloakUser.Credential>() 
+                Credentials = new List<KeycloakUser.Credential>()
             };
 
             var response = new HttpResponseMessage(HttpStatusCode.Created);
@@ -85,7 +85,7 @@ namespace Octavus.Tests.Services
                 LastName = "User",
                 Email = "test@example.com",
                 Enabled = true,
-                Credentials = new List<KeycloakUser.Credential>() 
+                Credentials = new List<KeycloakUser.Credential>()
             };
 
             var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
