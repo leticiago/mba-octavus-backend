@@ -27,6 +27,12 @@ namespace Octavus.Infra.Core.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
+
+            var baseUrl = _configuration.GetSection("Keycloak")["auth-server-url"]?.TrimEnd('/');
+            if (!string.IsNullOrEmpty(baseUrl))
+            {
+                _httpClient.BaseAddress = new Uri(baseUrl);
+            }
         }
 
         public async Task<string?> AuthenticateAsync(string username, string password)

@@ -133,5 +133,21 @@ namespace Octavus.Tests.Services
             _mockRepo.Verify(r => r.DeleteAsync(id), Times.Once);
             _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
         }
+
+        [Test]
+        public async Task CreateAsync_ReturnsEntityEvenIfSaveChangesFails()
+        {
+            var instrument = new Instrument { Id = Guid.NewGuid(), Name = "Flute" };
+
+            _mockRepo.Setup(r => r.AddAsync(instrument)).Returns(Task.CompletedTask);
+            _mockRepo.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+
+            var result = await _service.CreateAsync(instrument);
+
+            Assert.That(result.Id, Is.EqualTo(instrument.Id));
+            Assert.That(result.Name, Is.EqualTo("Flute"));
+        }
+
+
     }
 }

@@ -101,5 +101,35 @@ namespace Octavus.Tests.Repositories
             var all = await _repository.GetAllAsync();
             Assert.That(all, Is.Empty);
         }
+
+        [Test]
+        public async Task GetAllAsync_ShouldReturnAllProfiles()
+        {
+            var profile1 = new Profile { Id = Guid.NewGuid(), Name = "Perfil 1" };
+            var profile2 = new Profile { Id = Guid.NewGuid(), Name = "Perfil 2" };
+
+            await _repository.AddAsync(profile1);
+            await _repository.AddAsync(profile2);
+
+            var all = await _repository.GetAllAsync();
+
+            Assert.That(all.Count, Is.EqualTo(2));
+            Assert.That(all.Any(p => p.Name == "Perfil 1"), Is.True);
+            Assert.That(all.Any(p => p.Name == "Perfil 2"), Is.True);
+        }
+
+        [Test]
+        public void DeleteAsync_ShouldNotThrow_WhenProfileDoesNotExist()
+        {
+            Assert.DoesNotThrowAsync(async () => await _repository.DeleteAsync(Guid.NewGuid()));
+        }
+
+        [Test]
+        public void UpdateAsync_ShoulThrow_WhenProfileDoesNotExist()
+        {
+            var profile = new Profile { Id = Guid.NewGuid(), Name = "Perfil Inexistente" };
+            Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _repository.UpdateAsync(profile));
+        }
+
     }
 }

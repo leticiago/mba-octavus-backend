@@ -92,5 +92,19 @@ namespace Octavus.Tests.Repositories
             var deletedUser = await _repository.GetByEmailAsync("bob@example.com");
             Assert.IsNull(deletedUser);
         }
+
+        [Test]
+        public async Task UpdateAsync_ShouldModifyUserData()
+        {
+            var user = await _repository.GetByEmailAsync("alice@example.com");
+            Assert.IsNotNull(user);
+
+            user!.Name = "Alice Updated";
+            await _repository.UpdateAsync(user);
+
+            var updatedUser = await _repository.GetByEmailAsync("alice@example.com");
+            Assert.That(updatedUser!.Name, Is.EqualTo("Alice Updated"));
+        }
+
     }
 }

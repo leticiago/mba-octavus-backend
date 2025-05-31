@@ -178,5 +178,75 @@ namespace Octavus.Tests.Services
             var ex = Assert.ThrowsAsync<Exception>(() => _service.DeleteAsync(id));
             StringAssert.Contains("Usuário não encontrado", ex.Message);
         }
+
+        [Test]
+        public void CreateAsync_ShouldThrow_WhenKeycloakCreationFails()
+        {
+            var dto = new CreateUserDto
+            {
+                Email = "user@example.com",
+                Password = "Strong@123",
+                Name = "John",
+                Username = "johnny",
+                Contact = "123456",
+                InstrumentId = Guid.NewGuid(),
+                ProfileId = Guid.NewGuid(),
+                Roles = new List<string> { "admin" }
+            };
+
+            _kcServiceMock.Setup(k => k.CreateUserAndAssignRolesAsync(It.IsAny<KeycloakUser>())).ReturnsAsync(false);
+
+            var ex = Assert.ThrowsAsync<Exception>(() => _service.CreateAsync(dto));
+            StringAssert.Contains("Erro ao cadastrar usuário no Keycloak", ex.Message);
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldHashPassword()
+        {
+            var dto = new CreateUserDto
+            {
+                Email = "user@example.com",
+                Password = "Strong@123",
+                Name = "John",
+                Username = "johnny",
+                Contact = "123456",
+                InstrumentId = Guid.NewGuid(),
+                ProfileId = Guid.NewGuid(),
+                Roles = new List<string> { "admin" }
+            };
+
+            User? capturedUser = null;
+            _kcServiceMock.Setup(k => k.CreateUserAndAssignRolesAsync(It.IsAny<KeycloakUser>())).ReturnsAsync(true);
+            _userRepoMock.Setup(r => r.AddAsync(It.IsAny<User>()))
+                .Callback<User>(u => capturedUser = u);
+
+            await _service.CreateAsync(dto);
+
+            Assert.That(capturedUser, Is.Not.Null);
+            Assert.That(capturedUser!.Password, Is.Not.EqualTo(dto.Password));
+        }
+
+        [TestCase("Valid@123")]
+        [TestCase("Pass@Word1")]
+        public async Task CreateAsync_ShouldAccept_ValidPasswords(string validPassword)
+        {
+            var dto = new CreateUserDto
+            {
+                Email = "user@example.com",
+                Password = validPassword,
+                Name = "User",
+                Username = "user",
+                Contact = "123",
+                InstrumentId = Guid.NewGuid(),
+                ProfileId = Guid.NewGuid(),
+                Roles = new List<string>()
+            };
+
+            _kcServiceMock.Setup(k => k.CreateUserAndAssignRolesAsync(It.IsAny<KeycloakUser>())).ReturnsAsync(true);
+
+            var result = await _service.CreateAsync(dto);
+            Assert.That(result.Email, Is.EqualTo(dto.Email));
+        }
+
     }
 }

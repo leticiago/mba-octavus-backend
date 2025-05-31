@@ -202,5 +202,107 @@ namespace Octavus.Tests.Services
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result[0].Name, Is.EqualTo("Pública"));
         }
+
+        [Test]
+        public async Task GetAllAsync_WithEmptyList_ShouldReturnEmpty()
+        {
+            _repositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Activity>());
+
+            var result = await _service.GetAllAsync();
+
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task GetByProfessorIdAsync_WithEmptyList_ShouldReturnEmpty()
+        {
+            var professorId = Guid.NewGuid();
+            _repositoryMock.Setup(r => r.GetByProfessorIdAsync(professorId)).ReturnsAsync(new List<Activity>());
+
+            var result = await _service.GetByProfessorIdAsync(professorId);
+
+            Assert.IsNotNull(result);
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task UpdateAsync_ShouldUpdateAllFields()
+        {
+            var id = Guid.NewGuid();
+            var existing = new Activity
+            {
+                Id = id,
+                Name = "Old Name",
+                Description = "Old Desc",
+                Date = DateTime.UtcNow.AddDays(-1),
+                InstrumentId = Guid.NewGuid(),
+                Level = Level.Beginner.ToString(),
+                ProfessorId = Guid.NewGuid(),
+                IsPublic = true,
+                Type = ActivityType.QuestionAndAnswer.ToString()
+            };
+
+            var dto = new CreateActivityDto
+            {
+                Name = "New Name",
+                Description = "New Desc",
+                Date = DateTime.UtcNow,
+                InstrumentId = Guid.NewGuid(),
+                Level = Level.Advanced,
+                ProfessorId = Guid.NewGuid(),
+                IsPublic = false,
+                Type = ActivityType.DragAndDrop
+            };
+
+            _repositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(existing);
+
+            await _service.UpdateAsync(id, dto);
+
+            _repositoryMock.Verify(r => r.UpdateAsync(It.Is<Activity>(a =>
+                a.Name == existing.Name &&
+                a.Description == existing.Description &&
+                a.Date == existing.Date &&
+                a.InstrumentId == existing.InstrumentId &&
+                a.Level == existing.Level.ToString() &&
+                a.ProfessorId == existing.ProfessorId &&
+                a.IsPublic == existing.IsPublic &&
+                a.Type == existing.Type.ToString()
+            )), Times.Once);
+        }
+
+        [Test]
+        public void UpdateAsync_WithNullDto_ShouldThrowExceptionAtividadeNaoEncontrada()
+        {
+            var id = Guid.NewGuid();
+
+            _repositoryMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Activity)null);
+
+            var ex = Assert.ThrowsAsync<Exception>(async () =>
+                await _service.UpdateAsync(id, null));
+
+            Assert.That(ex.Message, Is.EqualTo("Atividade não encontrada"));
+        }
+
+
+        [Test]
+        public async Task GetPublicActivitiesAsync_ShouldMapAllFieldsCorrectly()
+        {
+            var id = Guid.NewGuid();
+            var activities = new List<Activity>
+            {
+                new Activity { Id = id, Name = "Public Activity", Description = "Description", IsPublic = true }
+            };
+
+            _repositoryMock.Setup(r => r.GetPublicActivitiesAsync()).ReturnsAsync(activities);
+
+            var result = await _service.GetPublicActivitiesAsync();
+
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result[0].Id, Is.EqualTo(id));
+            Assert.That(result[0].Name, Is.EqualTo("Public Activity"));
+            Assert.That(result[0].Description, Is.EqualTo("Description"));
+        }
+
     }
 }

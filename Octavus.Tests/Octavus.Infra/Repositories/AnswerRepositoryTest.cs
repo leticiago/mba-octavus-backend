@@ -87,5 +87,39 @@ namespace Octavus.Tests.Repositories
             Assert.IsNotNull(result);
             Assert.IsEmpty(result);
         }
+
+        [Test]
+        public async Task GetCorrectAnswersAsync_ShouldReturnEmptyList_WhenMultipleQuestionsHaveNoCorrectAnswers()
+        {
+            var questionId1 = Guid.NewGuid();
+            var questionId2 = Guid.NewGuid();
+
+            var answers = new List<Answer>
+    {
+        new Answer { Id = Guid.NewGuid(), QuestionId = questionId1, Text = "A", IsCorrect = false },
+        new Answer { Id = Guid.NewGuid(), QuestionId = questionId2, Text = "B", IsCorrect = false }
+    };
+
+            await _context.AddRangeAsync(answers);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetCorrectAnswersAsync(new List<Guid> { questionId1, questionId2 });
+
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public async Task GetCorrectAnswersAsync_ShouldReturnEmptyList_WhenQuestionIdsHaveNoAnswers()
+        {
+            var nonexistentIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+            var result = await _repository.GetCorrectAnswersAsync(nonexistentIds);
+
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
+
     }
 }

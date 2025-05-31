@@ -92,5 +92,131 @@ namespace Octavus.Tests.Services
             _mockActivityStudentRepository.Verify(r => r.UpdateAsync(It.IsAny<ActivityStudent>()), Times.Once);
             _mockQuestionRepository.Verify(r => r.GetByIdAsync(answer.QuestionId), Times.Once);
         }
+
+        [Test]
+        public async Task GetByIdAsync_ShouldReturnNull_WhenAnswerDoesNotExist()
+        {
+            var id = Guid.NewGuid();
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.GetByIdAsync(id))
+                .ReturnsAsync((OpenTextAnswer?)null);
+
+            var result = await _service.GetByIdAsync(id);
+
+            Assert.IsNull(result);
+            _mockOpenTextAnswerRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
+        }
+
+        [Test]
+        public void CreateAsync_ShouldThrowException_WhenQuestionNotFound()
+        {
+            var answer = new OpenTextAnswer
+            {
+                Id = Guid.NewGuid(),
+                StudentId = Guid.NewGuid(),
+                QuestionId = Guid.NewGuid()
+            };
+
+            _mockQuestionRepository
+                .Setup(r => r.GetByIdAsync(answer.QuestionId))
+                .ReturnsAsync((Question?)null);
+
+            Assert.ThrowsAsync<NullReferenceException>(async () => await _service.CreateAsync(answer));
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldNotUpdateActivityStudent_WhenQuestionIsNull()
+        {
+            var answer = new OpenTextAnswer
+            {
+                Id = Guid.NewGuid(),
+                StudentId = Guid.NewGuid(),
+                QuestionId = Guid.NewGuid()
+            };
+
+            _mockQuestionRepository
+                .Setup(r => r.GetByIdAsync(answer.QuestionId))
+                .ReturnsAsync((Question?)null);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.AddAsync(answer))
+                .Returns(Task.CompletedTask);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.SaveChangesAsync())
+                .ReturnsAsync(true);
+
+            var ex = Assert.ThrowsAsync<NullReferenceException>(async () => await _service.CreateAsync(answer));
+
+            _mockActivityStudentRepository.Verify(r => r.UpdateAsync(It.IsAny<ActivityStudent>()), Times.Never);
+        }
+
+        [Test]
+        public void CreateAsync_ShouldThrowException_WhenSaveChangesFails()
+        {
+            var answer = new OpenTextAnswer
+            {
+                Id = Guid.NewGuid(),
+                StudentId = Guid.NewGuid(),
+                QuestionId = Guid.NewGuid()
+            };
+
+            var question = new Question
+            {
+                Id = answer.QuestionId,
+                ActivityId = Guid.NewGuid()
+            };
+
+            _mockQuestionRepository
+                .Setup(r => r.GetByIdAsync(answer.QuestionId))
+                .ReturnsAsync(question);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.AddAsync(answer))
+                .Returns(Task.CompletedTask);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.SaveChangesAsync())
+                .ThrowsAsync(new Exception());
+
+            Assert.ThrowsAsync<Exception>(async () => await _service.CreateAsync(answer));
+        }
+
+        [Test]
+        public void CreateAsync_ShouldThrowException_WhenActivityStudentUpdateFails()
+        {
+            var answer = new OpenTextAnswer
+            {
+                Id = Guid.NewGuid(),
+                StudentId = Guid.NewGuid(),
+                QuestionId = Guid.NewGuid()
+            };
+
+            var question = new Question
+            {
+                Id = answer.QuestionId,
+                ActivityId = Guid.NewGuid()
+            };
+
+            _mockQuestionRepository
+                .Setup(r => r.GetByIdAsync(answer.QuestionId))
+                .ReturnsAsync(question);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.AddAsync(answer))
+                .Returns(Task.CompletedTask);
+
+            _mockOpenTextAnswerRepository
+                .Setup(r => r.SaveChangesAsync())
+                .ReturnsAsync(true);
+
+            _mockActivityStudentRepository
+                .Setup(r => r.UpdateAsync(It.IsAny<ActivityStudent>()))
+                .Throws(new Exception("Falha ao atualizar atividade do aluno"));
+
+            Assert.ThrowsAsync<Exception>(async () => await _service.CreateAsync(answer));
+        }
+
     }
 }

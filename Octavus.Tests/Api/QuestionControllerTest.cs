@@ -112,5 +112,30 @@ namespace Octavus.Tests.Controllers
             Assert.IsInstanceOf<NoContentResult>(result);
             _questionServiceMock.Verify(s => s.DeleteAsync(id), Times.Once);
         }
+
+        [Test]
+        public void CreateBatch_WhenServiceThrowsException_Returns500()
+        {
+            var dto = new CreateQuestionBatchDto();
+            _questionServiceMock.Setup(s => s.AddQuestionsBatchAsync(dto)).ThrowsAsync(new Exception("Erro"));
+
+            Assert.ThrowsAsync<Exception>(() => _controller.CreateBatch(dto));
+        }
+        [Test]
+        public async Task GetByActivity_WhenNoQuestionsFound_ReturnsEmptyList()
+        {
+            var activityId = Guid.NewGuid();
+            _questionServiceMock.Setup(s => s.GetByIdAsync(activityId)).ReturnsAsync(new List<QuestionDto>());
+
+            var result = await _controller.GetByActivity(activityId);
+            var okResult = result as OkObjectResult;
+
+            Assert.IsNotNull(okResult);
+            Assert.IsInstanceOf<List<QuestionDto>>(okResult.Value);
+            Assert.That(((List<QuestionDto>)okResult.Value).Count, Is.EqualTo(0));
+        }
+
+
+
     }
 }

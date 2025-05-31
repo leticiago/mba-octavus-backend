@@ -109,5 +109,53 @@ namespace Octavus.Tests.Repositories
             Assert.That(result.Count(), Is.EqualTo(countInDb));
             Assert.That(result.All(q => q.Answers != null && q.Answers.Count > 0));
         }
+
+        [Test]
+        public async Task GetByIdAsync_ShouldReturnQuestion_WhenNoAnswers()
+        {
+            var question = new Question
+            {
+                Id = Guid.NewGuid(),
+                Title = "Pergunta sem respostas",
+                ActivityId = Guid.NewGuid(),
+                Answers = new List<Answer>()
+            };
+
+            _context.Set<Question>().Add(question);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetByIdAsync(question.Id);
+
+            Assert.IsNotNull(result);
+            Assert.That(result!.Answers, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetByActivityIdAsync_ShouldReturnEmpty_WhenNoQuestionsForActivity()
+        {
+            var emptyActivityId = Guid.NewGuid();
+
+            var result = await _repository.GetByActivityIdAsync(emptyActivityId);
+
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public async Task GetAllAsync_ShouldReturnEmpty_WhenNoQuestions()
+        {
+            // Limpa a base antes do teste
+            foreach (var q in _context.Set<Question>())
+            {
+                _context.Set<Question>().Remove(q);
+            }
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetAllAsync();
+
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
     }
 }

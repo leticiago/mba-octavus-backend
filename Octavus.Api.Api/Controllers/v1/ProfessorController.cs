@@ -28,6 +28,9 @@ namespace Octavus.Controllers.v1
         [HttpPost("link-student")]
         public async Task<IActionResult> LinkStudent([FromBody] LinkStudentByEmailDto dto)
         {
+            if (dto.StudentEmail == null)
+                return BadRequest("E-mail deve ser valido");
+
             await _professorStudentService.LinkByEmailAsync(dto);
             return Ok(new { message = "Aluno vinculado com sucesso!" });
         }

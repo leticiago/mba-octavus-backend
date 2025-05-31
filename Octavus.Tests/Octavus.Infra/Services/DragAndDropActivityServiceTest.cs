@@ -75,5 +75,57 @@ namespace Octavus.Tests.Services
 
             Assert.ThrowsAsync<Exception>(() => _service.GetByIdAsync(Guid.NewGuid()));
         }
+
+        [Test]
+        public async Task CreateAsync_ShouldCallSaveChangesAsync()
+        {
+            var activityId = Guid.NewGuid();
+            var sequence = "A;B;C";
+
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<DragAndDropActivity>())).Returns(Task.CompletedTask);
+            _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.FromResult(true));
+
+            await _service.CreateAsync(activityId, sequence);
+
+            _mockRepo.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
+
+        [Test]
+        public async Task CreateAsync_ShouldGenerateNonEmptyId()
+        {
+            DragAndDropActivity capturedEntity = null;
+            _mockRepo.Setup(r => r.AddAsync(It.IsAny<DragAndDropActivity>()))
+                .Callback<DragAndDropActivity>(a => capturedEntity = a)
+                .Returns(Task.CompletedTask);
+            _mockRepo.Setup(r => r.SaveChangesAsync()).Returns(Task.FromResult(true));
+
+            var result = await _service.CreateAsync(Guid.NewGuid(), "A;B;C");
+
+            Assert.IsNotNull(capturedEntity);
+            Assert.AreNotEqual(Guid.Empty, capturedEntity.Id);
+        }
+
+        [Test]
+        public async Task GetAllAsync_ShouldReturnEmptyList_WhenNoActivities()
+        {
+            _mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<DragAndDropActivity>());
+
+            var result = await _service.GetAllAsync();
+
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public async Task Shuffle_ShouldHandleEmptyOrSingleItemSequences()
+        {
+            // Empty sequence
+            var resultEmpty = await _service.CreateAsync(Guid.NewGuid(), "");
+            Assert.AreEqual(new List<string>(), resultEmpty.ShuffledOptions);
+
+            // Single item
+            var resultSingle = await _service.CreateAsync(Guid.NewGuid(), "A");
+            Assert.AreEqual(1, resultSingle.ShuffledOptions.Count);
+            Assert.AreEqual("A", resultSingle.ShuffledOptions[0]);
+        }
     }
 }

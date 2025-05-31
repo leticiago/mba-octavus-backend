@@ -7,6 +7,7 @@ using Octavus.Controllers.v1;
 using Octavus.Core.Application.Services;
 using Octavus.Core.Application.DTO;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Octavus.Tests.Controllers
 {
@@ -148,6 +149,41 @@ namespace Octavus.Tests.Controllers
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.That(okResult.Value, Is.EqualTo(pendingReviews));
+        }
+
+        [Test]
+        public void LinkStudent_ThrowsException_Returns500()
+        {
+            var dto = new LinkStudentByEmailDto
+            {
+                StudentEmail = "student@example.com",
+                ProfessorId = Guid.NewGuid()
+            };
+
+            _professorStudentServiceMock
+                .Setup(s => s.LinkByEmailAsync(dto))
+                .ThrowsAsync(new Exception("Erro interno"));
+
+            Assert.ThrowsAsync<Exception>(async () => await _controller.LinkStudent(dto));
+        }
+
+        [Test]
+        public void ManageStudent_HasAuthorizeAttribute()
+        {
+            var method = typeof(ProfessorController).GetMethod("ManageStudent");
+            var attribute = method.GetCustomAttributes(typeof(AuthorizeAttribute), true);
+            Assert.IsNotEmpty(attribute);
+        }
+
+        [Test]
+        public async Task LinkStudent_InvalidModel_ReturnsBadRequest()
+        {
+            
+            var dto = new LinkStudentByEmailDto();
+
+            var result = await _controller.LinkStudent(dto);
+
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
         }
     }
 }

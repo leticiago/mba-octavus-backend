@@ -12,6 +12,11 @@ namespace Octavus.Infra.Core
         {
             var sqlConnectionString = configuration.GetConnectionString("SqlDefault");
 
+            if (string.IsNullOrWhiteSpace(sqlConnectionString))
+            {
+                throw new InvalidOperationException("Connection string 'SqlDefault' is missing.");
+            }
+
             services.AddDbContext<Context>(options =>
             {
                 options.UseSqlServer(sqlConnectionString, sqlOptions =>

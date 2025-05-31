@@ -100,5 +100,46 @@ namespace Octavus.Tests.Repositories
             var all = await _repository.GetAllAsync();
             Assert.That(all, Is.Empty);
         }
+
+        [Test]
+        public async Task UpdateAsync_ShouldNotChange_WhenNoModifications()
+        {
+            var instrument = new Instrument { Id = Guid.NewGuid(), Name = "Flute" };
+            await _repository.AddAsync(instrument);
+
+            // Atualiza sem alterar propriedades
+            await _repository.UpdateAsync(instrument);
+
+            var fetched = await _repository.GetByIdAsync(instrument.Id);
+            Assert.That(fetched!.Name, Is.EqualTo("Flute"));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldNotThrow_WhenEntityNotFound()
+        {
+            var randomId = Guid.NewGuid();
+            // O ideal é que não lance exceção ou tenha comportamento definido
+            Assert.DoesNotThrowAsync(async () => await _repository.DeleteAsync(randomId));
+        }
+
+        [Test]
+        public async Task GetAllAsync_ShouldReturnAllInstruments()
+        {
+            var instruments = new[]
+            {
+        new Instrument { Id = Guid.NewGuid(), Name = "Harp" },
+        new Instrument { Id = Guid.NewGuid(), Name = "Cello" }
+    };
+
+            await _repository.AddAsync(instruments[0]);
+            await _repository.AddAsync(instruments[1]);
+
+            var all = await _repository.GetAllAsync();
+
+            Assert.That(all.Count, Is.EqualTo(2));
+            Assert.That(all.Any(i => i.Name == "Harp"));
+            Assert.That(all.Any(i => i.Name == "Cello"));
+        }
+
     }
 }

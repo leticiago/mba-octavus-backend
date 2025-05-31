@@ -148,5 +148,43 @@ namespace Octavus.Tests.Controllers
             Assert.IsNotNull(badRequest);
             Assert.That(badRequest.Value, Is.EqualTo("Erro ao efetuar logout."));
         }
+
+        [Test]
+        public async Task CreateUser_ReturnsBadRequest_WhenRequestIsNull()
+        {
+            var result = await _controller.CreateUser(null);
+            var badRequest = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequest);
+        }
+
+        [Test]
+        public async Task Login_ReturnsBadRequest_WhenRequestIsNull()
+        {
+            var result = await _controller.Login(null);
+            var badRequest = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequest);
+        }
+
+        [Test]
+        public async Task Logout_ReturnsBadRequest_WhenTokenIsMalformed()
+        {
+            var context = new DefaultHttpContext();
+            context.Request.Headers["Authorization"] = "invalid-token";
+
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = context
+            };
+
+            _keycloakServiceMock.Setup(k => k.LogoutAsync("invalid-token")).ReturnsAsync(false);
+
+            var result = await _controller.Logout();
+
+            var badRequest = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequest);
+            Assert.That(badRequest.Value, Is.EqualTo("Erro ao efetuar logout."));
+        }
+
+
     }
 }

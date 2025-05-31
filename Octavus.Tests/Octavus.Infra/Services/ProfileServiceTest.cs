@@ -144,5 +144,82 @@ namespace Octavus.Tests.Services
 
             Assert.IsFalse(result);
         }
+
+        [Test]
+        public async Task UpdateAsync_ShouldCallUpdateAsyncOnRepository()
+        {
+            var id = Guid.NewGuid();
+            var profile = new Profile { Id = id, Name = "Novo Nome" };
+            var existing = new Profile { Id = id, Name = "Antigo Nome" };
+
+            _mockProfileRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(existing);
+            _mockProfileRepository.Setup(r => r.UpdateAsync(existing)).Returns(Task.CompletedTask);
+            _mockProfileRepository.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+
+            var result = await _service.UpdateAsync(profile);
+
+            _mockProfileRepository.Verify(r => r.UpdateAsync(It.Is<Profile>(p => p.Id == id && p.Name == "Novo Nome")), Times.Once);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldCallDeleteAsyncOnRepository()
+        {
+            var id = Guid.NewGuid();
+            var profile = new Profile { Id = id, Name = "Excluir" };
+
+            _mockProfileRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(profile);
+            _mockProfileRepository.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
+            _mockProfileRepository.Setup(r => r.SaveChangesAsync()).ReturnsAsync(true);
+
+            var result = await _service.DeleteAsync(id);
+
+            _mockProfileRepository.Verify(r => r.DeleteAsync(id), Times.Once);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task UpdateAsync_ShouldReturnFalse_WhenSaveChangesFails()
+        {
+            var id = Guid.NewGuid();
+            var profile = new Profile { Id = id, Name = "Novo Nome" };
+            var existing = new Profile { Id = id, Name = "Antigo Nome" };
+
+            _mockProfileRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(existing);
+            _mockProfileRepository.Setup(r => r.UpdateAsync(existing)).Returns(Task.CompletedTask);
+            _mockProfileRepository.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+
+            var result = await _service.UpdateAsync(profile);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldReturnFalse_WhenSaveChangesFails()
+        {
+            var id = Guid.NewGuid();
+            var profile = new Profile { Id = id, Name = "Excluir" };
+
+            _mockProfileRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(profile);
+            _mockProfileRepository.Setup(r => r.DeleteAsync(id)).Returns(Task.CompletedTask);
+            _mockProfileRepository.Setup(r => r.SaveChangesAsync()).ReturnsAsync(false);
+
+            var result = await _service.DeleteAsync(id);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task GetByIdAsync_ShouldReturnNull_WhenProfileNotFound()
+        {
+            var id = Guid.NewGuid();
+
+            _mockProfileRepository.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Profile?)null);
+
+            var result = await _service.GetByIdAsync(id);
+
+            Assert.IsNull(result);
+        }
+
     }
 }

@@ -40,8 +40,13 @@ namespace Octavus.Tests.Repositories
             await _repository.AddAsync(answer);
 
             var all = await _repository.GetAllAsync();
+
             Assert.That(all, Has.One.Items);
+            var saved = all.ElementAt(0);
+            Assert.That(saved.Id, Is.EqualTo(answer.Id));
+            Assert.That(saved.ResponseText, Is.EqualTo(answer.ResponseText));
         }
+
 
         [Test]
         public async Task GetByIdAsync_ShouldReturnOpenTextAnswer_WhenExists()
@@ -100,5 +105,48 @@ namespace Octavus.Tests.Repositories
             var all = await _repository.GetAllAsync();
             Assert.That(all, Is.Empty);
         }
+        [Test]
+        public async Task UpdateAsync_ShouldNotChange_WhenNoModifications()
+        {
+            var answer = new OpenTextAnswer
+            {
+                Id = Guid.NewGuid(),
+                ResponseText = "Sem alteração"
+            };
+
+            await _repository.AddAsync(answer);
+
+            await _repository.UpdateAsync(answer);
+
+            var fetched = await _repository.GetByIdAsync(answer.Id);
+            Assert.That(fetched!.ResponseText, Is.EqualTo("Sem alteração"));
+        }
+
+        [Test]
+        public async Task DeleteAsync_ShouldNotThrow_WhenEntityNotFound()
+        {
+            var nonExistentId = Guid.NewGuid();
+            Assert.DoesNotThrowAsync(async () => await _repository.DeleteAsync(nonExistentId));
+        }
+
+        [Test]
+        public async Task GetAllAsync_ShouldReturnAllOpenTextAnswers()
+        {
+            var answers = new[]
+            {
+        new OpenTextAnswer { Id = Guid.NewGuid(), ResponseText = "Resposta 1" },
+        new OpenTextAnswer { Id = Guid.NewGuid(), ResponseText = "Resposta 2" }
+    };
+
+            await _repository.AddAsync(answers[0]);
+            await _repository.AddAsync(answers[1]);
+
+            var all = await _repository.GetAllAsync();
+
+            Assert.That(all.Count, Is.EqualTo(2));
+            Assert.That(all.Any(a => a.ResponseText == "Resposta 1"));
+            Assert.That(all.Any(a => a.ResponseText == "Resposta 2"));
+        }
+
     }
 }

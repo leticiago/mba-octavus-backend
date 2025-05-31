@@ -103,5 +103,38 @@ namespace Octavus.Tests.Repositories
             Assert.IsNotNull(saved);
             Assert.That(saved!.Id, Is.EqualTo(activity.Id));
         }
+
+        [Test]
+        public async Task GetAllByIds_ShouldReturnEmptyList_WhenInputListIsEmpty()
+        {
+            var result = await _repository.GetAllByIds(new List<Guid>());
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetByProfessorIdAsync_ShouldReturnEmpty_WhenNoMatch()
+        {
+            var result = await _repository.GetByProfessorIdAsync(Guid.NewGuid());
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetPublicActivitiesAsync_ShouldReturnEmpty_WhenNoPublicActivities()
+        {
+            var activities = new List<Activity>
+            {
+                new Activity { Id = Guid.NewGuid(), IsPublic = false, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString()}
+            };
+
+            await _context.AddRangeAsync(activities);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetPublicActivitiesAsync();
+
+            Assert.That(result, Is.Empty);
+        }
+
     }
 }

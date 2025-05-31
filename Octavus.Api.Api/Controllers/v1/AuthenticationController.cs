@@ -31,6 +31,9 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
+        if (request == null)
+            return BadRequest("Requisição inválida.");
+
         var token = await _keycloakService.AuthenticateAsync(request.Username, request.Password);
         if (token == null)
             return Unauthorized("Credenciais inválidas.");

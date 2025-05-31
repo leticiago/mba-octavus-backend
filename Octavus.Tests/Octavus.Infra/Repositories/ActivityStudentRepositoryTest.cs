@@ -262,5 +262,45 @@ namespace Octavus.Tests.Repositories
 
             Assert.IsTrue(results.All(dto => dto.Title == "Atividade 1" || dto.Title == "Atividade 2"));
         }
+        [Test]
+        public async Task GetPendingReviewsByProfessorAsync_ShouldReturnEmpty_WhenNoPendingActivities()
+        {
+            var professorId = Guid.NewGuid();
+            var results = await _repository.GetPendingReviewsByProfessorAsync(professorId);
+            Assert.That(results, Is.Empty);
+        }
+
+        [Test]
+        public async Task GetCompletedActivitiesByStudentAsync_ShouldReturnEmpty_WhenNoneAreCorrected()
+        {
+            var studentId = Guid.NewGuid();
+
+            var activity = new Activity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Não Corrigida",
+                Type = ActivityType.OpenText.ToString(),
+                Description = "desc",
+                Level = Level.Beginner.ToString()
+            };
+
+            var notCompleted = new ActivityStudent
+            {
+                Id = Guid.NewGuid(),
+                StudentId = studentId,
+                ActivityId = activity.Id,
+                Activity = activity,
+                IsCorrected = false,
+                Score = 20
+            };
+
+            await _context.AddRangeAsync(activity, notCompleted);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.GetCompletedActivitiesByStudentAsync(studentId);
+            Assert.That(result, Is.Empty);
+        }
+
+
     }
 }

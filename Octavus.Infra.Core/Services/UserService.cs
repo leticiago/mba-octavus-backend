@@ -46,9 +46,9 @@ namespace Octavus.Infra.Core.Services
                 LastName = "",
                 Enabled = true,
                 Credentials = new()
-        {
-            new Credential { Type = "password", Value = dto.Password, Temporary = false }
-        },
+                {
+                    new Credential { Type = "password", Value = dto.Password, Temporary = false }
+                },
                 Roles = dto.Roles
             };
 

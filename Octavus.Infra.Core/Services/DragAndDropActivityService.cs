@@ -66,10 +66,14 @@ namespace Octavus.Infra.Core.Services
 
         private List<string> Shuffle(string input)
         {
-            var items = input.Split(';').ToList();
+            if (string.IsNullOrWhiteSpace(input))
+                return new List<string>();
+
+            var items = input.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
             var rnd = new Random();
             return items.OrderBy(x => rnd.Next()).ToList();
         }
+
     }
 
 }

@@ -103,5 +103,73 @@ namespace Octavus.Tests.Repositories
             Assert.IsNotNull(students);
             Assert.IsEmpty(students);
         }
+
+        [Test]
+        public async Task GetStudentsByProfessorAsync_ShouldReturnEmpty_WhenProfessorHasNoStudents()
+        {
+            var newProfessorId = Guid.NewGuid();
+            _context.Set<User>().Add(new User { Id = newProfessorId, Name = "Prof. Novo", Email = "novo.prof@example.com", Password = "pass", Username = "user" });
+            await _context.SaveChangesAsync();
+
+            var students = await _repository.GetStudentsByProfessorAsync(newProfessorId);
+
+            Assert.IsNotNull(students);
+            Assert.IsEmpty(students);
+        }
+
+        [Test]
+        public void GetBond_ShouldReturnNull_WhenStudentAndProfessorDoNotMatch()
+        {
+            var professorStudent = _context.Set<ProfessorStudent>().First();
+
+            // Passa professorId de um e studentId de outro que não estão vinculados
+            var unrelatedStudentId = Guid.NewGuid();
+            var unrelatedProfessorId = Guid.NewGuid();
+
+            var result = _repository.GetBond(professorStudent.StudentId, unrelatedProfessorId);
+            Assert.IsNull(result);
+
+            result = _repository.GetBond(unrelatedStudentId, professorStudent.ProfessorId);
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public async Task GetStudentsByProfessorAsync_ShouldReturnOnlyActiveStudents()
+        {
+            var professorStudent = _context.Set<ProfessorStudent>().First();
+
+            var inactiveStudentId = Guid.NewGuid();
+            var instrumentId = _context.Set<Instrument>().First().Id;
+
+            _context.Set<User>().Add(new User { Id = inactiveStudentId, Name = "Aluno Inativo", Email = "inativo@example.com", Password = "pass", Username = "user" });
+            _context.Set<ProfessorStudent>().Add(new ProfessorStudent
+            {
+                Id = Guid.NewGuid(),
+                ProfessorId = professorStudent.ProfessorId,
+                StudentId = inactiveStudentId,
+                InstrumentId = instrumentId,
+                Active = false
+            });
+            await _context.SaveChangesAsync();
+
+            var students = await _repository.GetStudentsByProfessorAsync(professorStudent.ProfessorId);
+
+            Assert.That(students.Count, Is.EqualTo(1));
+            Assert.That(students.Any(s => s.Name == "Aluno Inativo"), Is.False);
+        }
+
+        [Test]
+        public async Task GetStudentsByProfessorAsync_ShouldReturnCorrectData()
+        {
+            var professorStudent = _context.Set<ProfessorStudent>().First();
+            var students = await _repository.GetStudentsByProfessorAsync(professorStudent.ProfessorId);
+
+            var studentFromDb = _context.Set<User>().Find(students[0].Id);
+            var instrumentFromDb = _context.Set<Instrument>().Find(professorStudent.InstrumentId);
+
+            Assert.That(students[0].Email, Is.EqualTo(studentFromDb!.Email));
+            Assert.That(students[0].Instrument, Is.EqualTo(instrumentFromDb!.Name));
+        }
+
     }
 }
