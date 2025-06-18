@@ -40,6 +40,13 @@ namespace Octavus.App.Api.Controllers.v1
             return Ok(user);
         }
 
+        [HttpGet("email/{email}")]
+        public async Task<IActionResult> GetByEmail(string email)
+        {
+            var user = await _service.GetByEmailAsync(email);
+            return Ok(user);
+        }
+
         [HttpPut("{id}")]
         [Authorize(Roles = "Aluno, Professor, Colaborador")]
         public async Task<IActionResult> Update(Guid id, [FromBody] CreateUserDto dto)

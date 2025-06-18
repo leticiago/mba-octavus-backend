@@ -35,7 +35,7 @@ namespace Octavus.Infra.Core.Services
             }
             else
             {
-                student.Id = dto.StudentId;
+                student.Id = (Guid)dto.StudentId;
             }
 
             var entity = new ProfessorStudent
@@ -61,7 +61,7 @@ namespace Octavus.Infra.Core.Services
                 StudentId = dto.StudentId,
             };
 
-            var link = _repository.GetBond(professorStudent.StudentId, professorStudent.ProfessorId);
+            var link = _repository.GetBond((Guid)professorStudent.StudentId, professorStudent.ProfessorId);
             if (link == null) throw new Exception("Vínculo não encontrado.");
 
             if (dto.Active.HasValue)

@@ -14,6 +14,7 @@ namespace Octavus.Core.Application.Services
         Task<UserDto> GetByIdAsync(Guid id);
         Task UpdateAsync(Guid id, CreateUserDto dto);
         Task DeleteAsync(Guid id);
+        Task<UserDto> GetByEmailAsync(string email);
     }
 
 }

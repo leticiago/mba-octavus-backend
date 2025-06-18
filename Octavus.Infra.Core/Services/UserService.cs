@@ -92,6 +92,19 @@ namespace Octavus.Infra.Core.Services
             };
         }
 
+        public async Task<UserDto> GetByEmailAsync(string email)
+        {
+            var user = await _repository.GetByEmailAsync(email) ?? throw new Exception("Usuário não encontrado.");
+            return new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                Username = user.Username,
+                Contact = user.Contact
+            };
+        }
+
         public async Task UpdateAsync(Guid id, CreateUserDto dto)
         {
             var user = await _repository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado.");

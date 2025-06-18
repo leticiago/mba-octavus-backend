@@ -16,6 +16,9 @@ using Octavus.Core.Application.Services;
 using Octavus.Infra.Core.Services;
 using Octavus.Infra.Persistence.Repositories;
 using Octavus.Core.Application.Repositories;
+using Newtonsoft.Json.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 public class Startup
 {
@@ -55,7 +58,27 @@ public class Startup
                     ValidateIssuer = true,
                     ValidIssuer = $"{authority}/realms/{realm}",
                     ValidateAudience = true,
-                    ValidateLifetime = true
+                    ValidateLifetime = true,
+                    RoleClaimType = ClaimTypes.Role,
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var claimsIdentity = context.Principal.Identity as ClaimsIdentity;
+                        var roleClaims = context.Principal.FindFirst("realm_access");
+
+                        if (roleClaims != null)
+                        {
+                            var parsedRoles = JObject.Parse(roleClaims.Value)["roles"];
+                            foreach (var role in parsedRoles)
+                            {
+                                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+                            }
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
