@@ -12,7 +12,7 @@ namespace Octavus.Core.Application.Services
         Task<ActivityDto> CreateAsync(CreateActivityDto dto);
         Task<IEnumerable<ActivityDto>> GetAllAsync();
         Task<ActivityDto> GetByIdAsync(Guid id);
-        Task<IEnumerable<ActivityDto>> GetByProfessorIdAsync(Guid professorId);
+        Task<IEnumerable<ActivityDto>> GetByProfessorIdAsync(Guid professorId, Guid? instrumentId);
         Task UpdateAsync(Guid id, CreateActivityDto dto);
         Task DeleteAsync(Guid id);
         Task<List<ActivityDto>> GetPublicActivitiesAsync();

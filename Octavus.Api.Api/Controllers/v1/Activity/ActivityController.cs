@@ -47,9 +47,9 @@ namespace Octavus.App.Api.Controllers.v1
 
         [HttpGet("professor/{professorId}")]
         [Authorize(Roles = "Professor")]
-        public async Task<IActionResult> GetByProfessor(Guid professorId)
+        public async Task<IActionResult> GetByProfessor(Guid professorId, Guid? instrumentId)
         {
-            var result = await _activityService.GetByProfessorIdAsync(professorId);
+            var result = await _activityService.GetByProfessorIdAsync(professorId, instrumentId);
             return Ok(result);
         }
 

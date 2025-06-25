@@ -10,10 +10,11 @@ namespace Octavus.Infra.Persistence.Repositories
         {
         }
 
-        public async Task<IEnumerable<Activity>> GetByProfessorIdAsync(Guid professorId)
+        public async Task<IEnumerable<Activity>> GetByProfessorIdAsync(Guid professorId, Guid? instrumentId)
         {
             return await _dbSet
-                .Where(a => a.ProfessorId == professorId)
+                .Where(a => a.ProfessorId == professorId &&
+                            (instrumentId == null || a.InstrumentId == instrumentId))
                 .ToListAsync();
         }
 

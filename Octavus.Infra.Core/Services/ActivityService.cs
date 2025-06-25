@@ -91,9 +91,9 @@ namespace Octavus.Infra.Core.Services
             };
         }
 
-        public async Task<IEnumerable<ActivityDto>> GetByProfessorIdAsync(Guid professorId)
+        public async Task<IEnumerable<ActivityDto>> GetByProfessorIdAsync(Guid professorId, Guid? instrumentId)
         {
-            var entities = await _repository.GetByProfessorIdAsync(professorId);
+            var entities = await _repository.GetByProfessorIdAsync(professorId, instrumentId);
             var response = new List<ActivityDto>();
 
             foreach (var entity in entities)
