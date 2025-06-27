@@ -2,6 +2,7 @@
 using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Repositories;
 using Octavus.Core.Domain.Entities;
+using Octavus.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace Octavus.Infra.Persistence.Repositories
                         where link.ProfessorId == professorId
                               && link.Active
                               && activityStudent.IsCorrected == false
+                              && activity.Type == ActivityType.OpenText.ToString()
                         select new PendingActivityReviewDto
                         {
                             StudentId = student.Id,
