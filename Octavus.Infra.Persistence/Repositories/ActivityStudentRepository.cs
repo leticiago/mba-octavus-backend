@@ -51,7 +51,7 @@ namespace Octavus.Infra.Persistence.Repositories
         {
             return await _context.Set<ActivityStudent>()
                 .Include(a => a.Activity)
-                .Where(a => a.StudentId == studentId)
+                .Where(a => a.StudentId == studentId && a.Status == ActivityStatus.Pending)
                 .ToListAsync();
         }
 

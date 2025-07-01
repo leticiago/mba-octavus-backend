@@ -21,7 +21,7 @@ namespace Octavus.Controllers.v1
             _studentService = studentservice;
         }
 
-        [HttpGet("{studentId}")]
+        [HttpGet("{studentId}/activities")]
         [Authorize(Roles = "Aluno")]
         public async Task<IActionResult> GetActivities(Guid studentId)
         {
