@@ -72,6 +72,7 @@ namespace Octavus.Infra.Core.Services
                 Title = a.Activity.Name,
                 Description = a.Activity.Description,
                 Status = a.Status,
+                Type = ActivityTypeExtensions.FromString(a.Activity.Type),
                 Score = a.Score,
                 Comment = a.Comment,
                 IsCorrected = a.IsCorrected,

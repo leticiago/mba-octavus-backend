@@ -13,6 +13,7 @@ namespace Octavus.Core.Application.DTO
         public string Title { get; set; }
         public string Description { get; set; }
         public ActivityStatus Status { get; set; }
+        public ActivityType Type { get; set; }
         public int? Score { get; set; }
         public string Comment { get; set; }
         public bool IsCorrected { get; set; }
