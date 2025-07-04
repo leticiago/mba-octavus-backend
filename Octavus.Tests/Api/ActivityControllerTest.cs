@@ -82,10 +82,10 @@ namespace Octavus.Tests.Controllers
             // Arrange
             var professorId = Guid.NewGuid();
             var activities = new List<ActivityDto> { new ActivityDto(), new ActivityDto() };
-            _activityServiceMock.Setup(s => s.GetByProfessorIdAsync(professorId)).Returns(Task.FromResult(activities.AsEnumerable()));
+            _activityServiceMock.Setup(s => s.GetByProfessorIdAsync(professorId, null)).Returns(Task.FromResult(activities.AsEnumerable()));
 
             // Act
-            var result = await _controller.GetByProfessor(professorId);
+            var result = await _controller.GetByProfessor(professorId, null);
 
             // Assert
             var okResult = result as OkObjectResult;

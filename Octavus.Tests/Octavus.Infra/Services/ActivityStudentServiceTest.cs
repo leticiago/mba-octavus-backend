@@ -114,7 +114,7 @@ namespace Octavus.Tests.Services
         {
             var studentId = Guid.NewGuid();
             var activitiesDomain = new List<ActivityStudent>
-    {
+        {
         new ActivityStudent
         {
             ActivityId = Guid.NewGuid(),
@@ -126,7 +126,8 @@ namespace Octavus.Tests.Services
             Activity = new Activity
             {
                 Name = "Atividade 1",
-                Description = "Descrição 1"
+                Description = "Descrição 1",
+                Type = ActivityType.OpenText.ToString(),
             }
         },
         new ActivityStudent
@@ -140,7 +141,8 @@ namespace Octavus.Tests.Services
             Activity = new Activity
             {
                 Name = "Atividade 2",
-                Description = "Descrição 2"
+                Description = "Descrição 2",
+                Type = ActivityType.OpenText.ToString(),
             }
         }
     };

@@ -119,9 +119,9 @@ namespace Octavus.Tests.Services
                 }
             };
 
-            _repositoryMock.Setup(r => r.GetByProfessorIdAsync(professorId)).ReturnsAsync(activities);
+            _repositoryMock.Setup(r => r.GetByProfessorIdAsync(professorId, null)).ReturnsAsync(activities);
 
-            var result = await _service.GetByProfessorIdAsync(professorId);
+            var result = await _service.GetByProfessorIdAsync(professorId, null);
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.First().ProfessorId, Is.EqualTo(professorId));
@@ -218,9 +218,9 @@ namespace Octavus.Tests.Services
         public async Task GetByProfessorIdAsync_WithEmptyList_ShouldReturnEmpty()
         {
             var professorId = Guid.NewGuid();
-            _repositoryMock.Setup(r => r.GetByProfessorIdAsync(professorId)).ReturnsAsync(new List<Activity>());
+            _repositoryMock.Setup(r => r.GetByProfessorIdAsync(professorId, null)).ReturnsAsync(new List<Activity>());
 
-            var result = await _service.GetByProfessorIdAsync(professorId);
+            var result = await _service.GetByProfessorIdAsync(professorId, null);
 
             Assert.IsNotNull(result);
             Assert.That(result.Count(), Is.EqualTo(0));

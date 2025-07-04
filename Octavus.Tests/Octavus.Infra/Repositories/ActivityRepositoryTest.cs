@@ -47,7 +47,7 @@ namespace Octavus.Tests.Repositories
             await _context.AddRangeAsync(activities);
             await _context.SaveChangesAsync();
 
-            var result = await _repository.GetByProfessorIdAsync(professorId);
+            var result = await _repository.GetByProfessorIdAsync(professorId, null);
 
             Assert.That(result, Has.Exactly(2).Items);
             Assert.IsTrue(result.All(a => a.ProfessorId == professorId));
@@ -115,7 +115,7 @@ namespace Octavus.Tests.Repositories
         [Test]
         public async Task GetByProfessorIdAsync_ShouldReturnEmpty_WhenNoMatch()
         {
-            var result = await _repository.GetByProfessorIdAsync(Guid.NewGuid());
+            var result = await _repository.GetByProfessorIdAsync(Guid.NewGuid(), Guid.NewGuid());
 
             Assert.That(result, Is.Empty);
         }

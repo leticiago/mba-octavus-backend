@@ -59,8 +59,8 @@ namespace Octavus.Tests.Services
         public async Task GetByIdAsync_ShouldReturnCorrectActivity()
         {
             var id = Guid.NewGuid();
-            var entity = new DragAndDropActivity { Id = id, ActivityId = Guid.NewGuid(), Text = "1;2;3" };
-            _mockRepo.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(entity);
+            var entity = new DragAndDropActivity { Id = id, ActivityId = id, Text = "1;2;3" };
+            _mockRepo.Setup(r => r.GetByActivityIdAsync(id)).ReturnsAsync(entity);
 
             var result = await _service.GetByIdAsync(id);
 

@@ -65,7 +65,7 @@ namespace Octavus.Tests.Mappings
 
             var contactProp = entity.FindProperty(nameof(User.Contact));
             Assert.IsNotNull(contactProp);
-            Assert.IsFalse(contactProp.IsNullable);
+            Assert.IsTrue(contactProp.IsNullable);
             Assert.That(contactProp.GetMaxLength(), Is.EqualTo(50));
 
             var instrumentIdProp = entity.FindProperty(nameof(User.InstrumentId));
