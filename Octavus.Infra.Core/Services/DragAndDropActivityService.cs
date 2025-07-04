@@ -54,7 +54,7 @@ namespace Octavus.Infra.Core.Services
 
         public async Task<DragAndDropActivityDto> GetByIdAsync(Guid id)
         {
-            var entity = await _repository.GetByIdAsync(id) ?? throw new Exception("Atividade não encontrada.");
+            var entity = await _repository.GetByActivityIdAsync(id) ?? throw new Exception("Atividade não encontrada.");
 
             return new DragAndDropActivityDto
             {
