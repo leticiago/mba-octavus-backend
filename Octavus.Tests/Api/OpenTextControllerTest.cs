@@ -129,10 +129,10 @@ namespace Octavus.Tests.Controllers
                 StudentId = Guid.NewGuid()
             };
 
-            _openTextAnswerServiceMock.Setup(s => s.GetByIdAsync(answerId)).ReturnsAsync(answer);
+            _openTextAnswerServiceMock.Setup(s => s.GetByIdAsync(answer.QuestionId, answer.StudentId)).ReturnsAsync(answer);
 
             // Act
-            var result = await _controller.GetAnswer(answerId);
+            var result = await _controller.GetAnswer(answer.QuestionId, answer.StudentId);
 
             // Assert
             var okResult = result as OkObjectResult;

@@ -58,8 +58,8 @@ namespace Octavus.Tests.Repositories
         {
             var activities = new List<Activity>
             {
-                new Activity { Id = Guid.NewGuid(), IsPublic = true, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString()},
-                new Activity { Id = Guid.NewGuid(), IsPublic = false, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString()},
+                new Activity { Id = Guid.NewGuid(), IsPublic = true, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.QuestionAndAnswer.ToString()},
+                new Activity { Id = Guid.NewGuid(), IsPublic = false, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.DragAndDrop.ToString()},
                 new Activity { Id = Guid.NewGuid(), IsPublic = true, Description = "description", Name = "name", Level = Level.Intermediate.ToString(), Type = ActivityType.OpenText.ToString()}
             };
 
@@ -68,7 +68,7 @@ namespace Octavus.Tests.Repositories
 
             var result = await _repository.GetPublicActivitiesAsync();
 
-            Assert.That(result, Has.Exactly(2).Items);
+            Assert.That(result, Has.Exactly(1).Items);
             Assert.IsTrue(result.All(a => a.IsPublic));
         }
 

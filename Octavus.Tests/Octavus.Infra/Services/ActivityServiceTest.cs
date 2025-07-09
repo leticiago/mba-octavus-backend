@@ -192,7 +192,7 @@ namespace Octavus.Tests.Services
         {
             var list = new List<Activity>
             {
-                new Activity { Id = Guid.NewGuid(), Name = "Pública", Description = "Livre" }
+                new Activity { Id = Guid.NewGuid(), Name = "Pública", Description = "Livre", Type = ActivityType.DragAndDrop.ToString(), Level = Level.Beginner.ToString() }
             };
 
             _repositoryMock.Setup(r => r.GetPublicActivitiesAsync()).ReturnsAsync(list);
@@ -291,7 +291,7 @@ namespace Octavus.Tests.Services
             var id = Guid.NewGuid();
             var activities = new List<Activity>
             {
-                new Activity { Id = id, Name = "Public Activity", Description = "Description", IsPublic = true }
+                new Activity { Id = id, Name = "Public Activity", Description = "Description", IsPublic = true, Type = ActivityType.QuestionAndAnswer.ToString(), Level = Level.Beginner.ToString() }
             };
 
             _repositoryMock.Setup(r => r.GetPublicActivitiesAsync()).ReturnsAsync(activities);

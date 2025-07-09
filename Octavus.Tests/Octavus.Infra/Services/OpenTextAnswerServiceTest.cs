@@ -34,17 +34,17 @@ namespace Octavus.Tests.Services
         public async Task GetByIdAsync_ShouldReturnAnswer_WhenAnswerExists()
         {
             var id = Guid.NewGuid();
-            var expectedAnswer = new OpenTextAnswer { Id = id, QuestionId = Guid.NewGuid() };
+            var expectedAnswer = new OpenTextAnswer { Id = id, QuestionId = Guid.NewGuid(), StudentId = Guid.NewGuid() };
 
             _mockOpenTextAnswerRepository
-                .Setup(r => r.GetByIdAsync(id))
+                .Setup(r => r.GetAnswerByActivity(expectedAnswer.QuestionId, expectedAnswer.StudentId))
                 .ReturnsAsync(expectedAnswer);
 
-            var result = await _service.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(expectedAnswer.QuestionId,expectedAnswer.StudentId );
 
             Assert.IsNotNull(result);
             Assert.That(result!.Id, Is.EqualTo(expectedAnswer.Id));
-            _mockOpenTextAnswerRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
+            _mockOpenTextAnswerRepository.Verify(r => r.GetAnswerByActivity(expectedAnswer.QuestionId, expectedAnswer.StudentId), Times.Once);
         }
 
         [Test]
@@ -99,13 +99,13 @@ namespace Octavus.Tests.Services
             var id = Guid.NewGuid();
 
             _mockOpenTextAnswerRepository
-                .Setup(r => r.GetByIdAsync(id))
+                .Setup(r => r.GetAnswerByActivity(id, id))
                 .ReturnsAsync((OpenTextAnswer?)null);
 
-            var result = await _service.GetByIdAsync(id);
+            var result = await _service.GetByIdAsync(id, id);
 
             Assert.IsNull(result);
-            _mockOpenTextAnswerRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
+            _mockOpenTextAnswerRepository.Verify(r => r.GetAnswerByActivity(id, id), Times.Once);
         }
 
         [Test]
