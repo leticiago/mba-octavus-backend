@@ -9,7 +9,7 @@ namespace Octavus.Core.Application.Services
 {
     public interface IOpenTextAnswerService
     {
-        Task<OpenTextAnswer?> GetByIdAsync(Guid id);
+        Task<OpenTextAnswer?> GetByIdAsync(Guid questionId, Guid studentId);
         Task<OpenTextAnswer> CreateAsync(OpenTextAnswer answer);
     }
 }

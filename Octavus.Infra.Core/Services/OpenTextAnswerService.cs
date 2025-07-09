@@ -23,9 +23,9 @@ namespace Octavus.Infra.Core.Services
             _questionRepository = questionRepository;
         }
 
-        public async Task<OpenTextAnswer?> GetByIdAsync(Guid id)
+        public async Task<OpenTextAnswer?> GetByIdAsync(Guid activityId, Guid studentId)
         {
-            return await _openTextAnswerRepository.GetByIdAsync(id);
+            return await _openTextAnswerRepository.GetAnswerByActivity(activityId, studentId);
         }
 
         public async Task<OpenTextAnswer> CreateAsync(OpenTextAnswer answer)
@@ -38,7 +38,8 @@ namespace Octavus.Infra.Core.Services
             {
                 StudentId = answer.StudentId,
                 ActivityId = question.ActivityId,
-                Status = Octavus.Core.Domain.Enums.ActivityStatus.Done
+                Status = Octavus.Core.Domain.Enums.ActivityStatus.Done,
+                Score = 0
             };
 
             await _activityStudentRepository.UpdateAsync(activity);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Octavus.Core.Application.Repositories;
 using Octavus.Core.Domain.Entities;
+using Octavus.Core.Domain.Enums;
 
 namespace Octavus.Infra.Persistence.Repositories
 {
@@ -21,7 +22,7 @@ namespace Octavus.Infra.Persistence.Repositories
         public async Task<List<Activity>> GetPublicActivitiesAsync()
         {
             return await _context.Set<Activity>()
-                .Where(a => a.IsPublic)
+                .Where(a => a.IsPublic && a.Type != ActivityType.OpenText.ToString())
                 .ToListAsync();
         }
 

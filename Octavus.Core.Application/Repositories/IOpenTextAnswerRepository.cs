@@ -9,7 +9,7 @@ namespace Octavus.Core.Application.Repositories
 {
     public interface IOpenTextAnswerRepository : IRepositoryBase<OpenTextAnswer>
     {
-
+        Task<OpenTextAnswer> GetAnswerByActivity(Guid activityId, Guid studentId);
     }
 
 }

@@ -147,7 +147,12 @@ namespace Octavus.Infra.Core.Services
             {
                 Id = a.Id,
                 Name = a.Name,
-                Description = a.Description
+                Description = a.Description,
+                Type =  ActivityTypeExtensions.FromString(a.Type),
+                Date = a.Date,
+                Level = ActivityLevelExtensions.FromString(a.Level),
+                InstrumentId = a.InstrumentId,
+
             }).ToList();
         }
     }

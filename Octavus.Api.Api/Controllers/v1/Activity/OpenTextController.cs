@@ -52,11 +52,11 @@ namespace Octavus.App.Api.Controllers.v1
             return StatusCode(201);
         }
 
-        [HttpGet("answer/{answerId}")]
+        [HttpGet("activity/{activityId}/student/{studentId}")]
         [Authorize(Roles = "Professor, Aluno")]
-        public async Task<IActionResult> GetAnswer(Guid answerId)
+        public async Task<IActionResult> GetAnswer(Guid activityId, Guid studentId)
         {
-            var result = await _openTextAnswerService.GetByIdAsync(answerId);
+            var result = await _openTextAnswerService.GetByIdAsync(activityId, studentId);
             return Ok(result);
         }
     }
