@@ -40,7 +40,7 @@ namespace Octavus.Tests.Services
                 .Setup(r => r.GetAnswerByActivity(expectedAnswer.QuestionId, expectedAnswer.StudentId))
                 .ReturnsAsync(expectedAnswer);
 
-            var result = await _service.GetByIdAsync(expectedAnswer.QuestionId,expectedAnswer.StudentId );
+            var result = await _service.GetByIdAsync(expectedAnswer.QuestionId, expectedAnswer.StudentId);
 
             Assert.IsNotNull(result);
             Assert.That(result!.Id, Is.EqualTo(expectedAnswer.Id));

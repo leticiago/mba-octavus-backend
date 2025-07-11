@@ -15,9 +15,9 @@ namespace Octavus.Infra.Persistence.Repositories
 
         public async Task<OpenTextAnswer> GetAnswerByActivity(Guid activityId, Guid studentId)
         {
-           var question = await _context.Set<Question>().Where(x => x.ActivityId == activityId).Select(x => x.Id).FirstOrDefaultAsync();
-           return await _context.Set<OpenTextAnswer>()
-                .Where(x => x.QuestionId == question && x.StudentId == studentId).FirstOrDefaultAsync();
+            var question = await _context.Set<Question>().Where(x => x.ActivityId == activityId).Select(x => x.Id).FirstOrDefaultAsync();
+            return await _context.Set<OpenTextAnswer>()
+                 .Where(x => x.QuestionId == question && x.StudentId == studentId).FirstOrDefaultAsync();
 
         }
 
