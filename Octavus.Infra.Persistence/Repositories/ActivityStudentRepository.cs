@@ -35,6 +35,7 @@ namespace Octavus.Infra.Persistence.Repositories
                         where link.ProfessorId == professorId
                               && link.Active
                               && activityStudent.IsCorrected == false
+                              && activityStudent.Status == ActivityStatus.Done
                               && activity.Type == ActivityType.OpenText.ToString()
                         select new PendingActivityReviewDto
                         {

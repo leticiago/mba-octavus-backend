@@ -1,4 +1,5 @@
-﻿using Octavus.Core.Application.DTO;
+﻿using Azure.Core;
+using Octavus.Core.Application.DTO;
 using Octavus.Core.Application.Repositories;
 using Octavus.Core.Application.Services;
 using Octavus.Core.Domain.Entities;
@@ -59,13 +60,15 @@ namespace Octavus.Infra.Core.Services
             await _repository.AddAsync(user);
             await _repository.SaveChangesAsync();
 
+            var token = await _keycloakService.AuthenticateAsync(user.Username, dto.Password);
             return new UserDto
             {
                 Id = user.Id,
                 Email = user.Email,
                 Name = user.Name,
                 Username = user.Username,
-                Contact = user.Contact
+                Contact = user.Contact,
+                Token = token
             };
         }
 
