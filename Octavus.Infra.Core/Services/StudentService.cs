@@ -16,12 +16,14 @@ namespace Octavus.Infra.Core.Services
     {
         private readonly IAnswerRepository _answerRepository;
         private readonly IActivityStudentRepository _activityStudentRepository;
+        private readonly IActivityRepository _activityRepository;
         private readonly IDragAndDropActivityRepository _dragAndDropActivityRepository;
-        public StudentService(IAnswerRepository answerRepository, IActivityStudentRepository activityStudentRepository, IDragAndDropActivityRepository dragAndDropActivityRepository)
+        public StudentService(IAnswerRepository answerRepository, IActivityStudentRepository activityStudentRepository, IDragAndDropActivityRepository dragAndDropActivityRepository, IActivityRepository activityRepository)
         {
             _answerRepository = answerRepository;
             _activityStudentRepository = activityStudentRepository;
             _dragAndDropActivityRepository = dragAndDropActivityRepository;
+            _activityRepository = activityRepository;
         }
 
         public async Task<int> SubmitAnswersAsync(SubmitAnswersDto dto)
@@ -35,8 +37,16 @@ namespace Octavus.Infra.Core.Services
             var score = (int)((double)correctCount / dto.Answers.Count * 100);
 
             var activityStudent = await _activityStudentRepository.GetActivityStudentAsync(dto.ActivityId, dto.StudentId);
-            if (activityStudent == null)
+            var activity = await _activityRepository.GetByIdAsync(dto.ActivityId);
+
+            if (activityStudent == null && !activity.IsPublic)
                 throw new Exception("Atividade não atribuída ao aluno.");
+
+            if (activity.IsPublic)
+                activityStudent = new ActivityStudent()
+                {
+                    StudentId = dto.StudentId,
+                };
 
             activityStudent.Score = score;
             activityStudent.IsCorrected = true;
@@ -77,6 +87,7 @@ namespace Octavus.Infra.Core.Services
                     Id = Guid.NewGuid(),
                     StudentId = dto.StudentId,
                     ActivityId = dto.ActivityId,
+                    Status = ActivityStatus.Done
                 };
                 await _activityStudentRepository.AddAsync(activityStudent);
             }

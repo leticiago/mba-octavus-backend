@@ -30,7 +30,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpPost("submit/question-and-answer")]
-        [Authorize(Roles = "Aluno")]
+        [Authorize(Roles = "Aluno, Professor")]
         public async Task<IActionResult> SubmitAnswers([FromBody] SubmitAnswersDto dto)
         {
             var score = await _studentService.SubmitAnswersAsync(dto);
@@ -50,7 +50,7 @@ namespace Octavus.Controllers.v1
         }
 
         [HttpPost("submit/drag-and-drop")]
-        [Authorize(Roles = "Aluno")]
+        [Authorize(Roles = "Aluno, Professor")]
         public async Task<IActionResult> SubmitDragAndDrop([FromBody] DragAndDropSubmissionDto dto)
         {
             var result = await _studentService.GradeDragAndDropAsync(dto);
