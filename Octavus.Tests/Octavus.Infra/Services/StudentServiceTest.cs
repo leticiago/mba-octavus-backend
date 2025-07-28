@@ -7,6 +7,7 @@ using Octavus.Core.Domain.Enums;
 using Octavus.Infra.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Octavus.Tests.Services
     {
         private Mock<IAnswerRepository> _answerRepo = null!;
         private Mock<IActivityStudentRepository> _activityStudentRepo = null!;
+        private Mock<IActivityRepository> _activityRepo = null!;
         private Mock<IDragAndDropActivityRepository> _dragRepo = null!;
         private StudentService _service = null!;
 
@@ -25,8 +27,9 @@ namespace Octavus.Tests.Services
         {
             _answerRepo = new Mock<IAnswerRepository>();
             _activityStudentRepo = new Mock<IActivityStudentRepository>();
+            _activityRepo = new Mock<IActivityRepository>();
             _dragRepo = new Mock<IDragAndDropActivityRepository>();
-            _service = new StudentService(_answerRepo.Object, _activityStudentRepo.Object, _dragRepo.Object);
+            _service = new StudentService(_answerRepo.Object, _activityStudentRepo.Object, _dragRepo.Object, _activityRepo.Object);
         }
 
         [Test]
@@ -60,10 +63,17 @@ namespace Octavus.Tests.Services
                 StudentId = dto.StudentId
             };
 
+            var activity = new Core.Domain.Entities.Activity()
+            {
+                Id = dto.ActivityId,
+                IsPublic = false
+            };
+
             _answerRepo.Setup(r => r.GetCorrectAnswersAsync(It.IsAny<List<Guid>>()))
                        .ReturnsAsync(correctAnswers);
             _activityStudentRepo.Setup(r => r.GetActivityStudentAsync(dto.ActivityId, dto.StudentId))
                                 .ReturnsAsync(activityStudent);
+            _activityRepo.Setup(a => a.GetByIdAsync(dto.ActivityId)).ReturnsAsync(activity);
 
             var score = await _service.SubmitAnswersAsync(dto);
 
@@ -91,11 +101,19 @@ namespace Octavus.Tests.Services
                 }
             };
 
+            var activity = new Core.Domain.Entities.Activity()
+            {
+                Id = dto.ActivityId,
+                IsPublic = false
+            };
+
             _answerRepo.Setup(r => r.GetCorrectAnswersAsync(It.IsAny<List<Guid>>()))
                        .ReturnsAsync(new List<Answer>());
 
             _activityStudentRepo.Setup(r => r.GetActivityStudentAsync(dto.ActivityId, dto.StudentId))
                                 .ReturnsAsync((ActivityStudent?)null);
+
+            _activityRepo.Setup(a => a.GetByIdAsync(dto.ActivityId)).ReturnsAsync(activity);
 
             var ex = Assert.ThrowsAsync<Exception>(() => _service.SubmitAnswersAsync(dto));
             Assert.That(ex!.Message, Is.EqualTo("Atividade não atribuída ao aluno."));

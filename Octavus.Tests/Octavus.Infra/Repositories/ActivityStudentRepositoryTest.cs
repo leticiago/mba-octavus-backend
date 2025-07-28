@@ -129,6 +129,7 @@ namespace Octavus.Tests.Repositories
             var activityStudent = new ActivityStudent
             {
                 Id = Guid.NewGuid(),
+                Status = ActivityStatus.Done,
                 StudentId = studentId,
                 ActivityId = activityId,
                 IsCorrected = false,
